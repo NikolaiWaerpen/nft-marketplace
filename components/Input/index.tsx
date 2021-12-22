@@ -3,7 +3,7 @@ import { ExclamationCircleIcon } from "@heroicons/react/solid";
 type InputProps = React.ComponentPropsWithoutRef<"input"> & {
   label?: string;
   description?: string;
-  error: string | undefined;
+  error?: string | undefined;
 };
 
 export default function Input({
