@@ -30,7 +30,7 @@ export default function Custom404() {
                 Page not found.
               </h1>
               <p className="mt-2 text-base text-gray-500">
-                Sorry, I couldn't find the page you're looking for.
+                Sorry, We couldn't find the page you're looking for.
               </p>
               <div className="mt-6">
                 <Link href="/">
@@ -48,7 +48,7 @@ export default function Custom404() {
               href={MAIL_TO}
               className="text-sm font-medium text-gray-500 hover:text-gray-600"
             >
-              Contact me for support
+              Contact me us support
             </a>
           </nav>
         </footer>
