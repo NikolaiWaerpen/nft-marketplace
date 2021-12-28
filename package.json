@@ -13,6 +13,7 @@
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
+    "dayjs": "^1.10.7",
     "formik": "^2.2.9",
     "lottie-colorify": "^0.8.0",
     "lottie-web": "^5.8.1",
@@ -21,7 +22,9 @@
     "opensea-js": "^1.2.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-moralis": "^0.3.11"
+    "react-moralis": "^0.3.11",
+    "react-query": "^3.34.6",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.0",

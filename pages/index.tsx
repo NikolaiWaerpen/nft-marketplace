@@ -138,6 +138,14 @@ export default function Home() {
           </Button>
           <Button
             onClick={() => {
+              setTokenAddress("0x5351105753bdbc3baa908a0c04f1468535749c3d");
+              setTokenId("10136");
+            }}
+          >
+            Autofill buy mainnet
+          </Button>
+          <Button
+            onClick={() => {
               setTokenAddress("0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656");
               setTokenId(
                 "52840209186602979145466938514798224023748304968365294380404559583410728730625"
