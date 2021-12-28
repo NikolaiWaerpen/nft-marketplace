@@ -1,13 +1,20 @@
 import AbsoluteContainer from "components/AbsoluteContainer";
 import Button from "components/Button";
 import Input from "components/Input";
+import seaport from "lib/seaport-client";
+import {
+  OpenSeaAsset,
+  OrderSide,
+  WyvernSchemaName,
+} from "opensea-js/lib/types";
 import { useEffect, useMemo, useState } from "react";
 import { useMoralis } from "react-moralis";
 
-// const network = "testnet";
-const network = "mainnet";
+const network = "testnet";
 
-export default function Home() {
+const publicAddress = "0x74d27fa12f8203170f2e4a43ba7455db906777f2";
+
+export default function sdk() {
   const {
     Moralis,
     user,
@@ -28,34 +35,33 @@ export default function Home() {
   );
 
   const getAsset = async () => {
-    const res = await Moralis.Plugins.opensea.getAsset({
-      network,
-      tokenAddress,
-      tokenId,
+    const asset: OpenSeaAsset = await seaport.api.getAsset({
+      tokenAddress, // string
+      tokenId, // string | number | null
     });
-    console.log(res);
+
+    console.log(asset);
+    return asset;
   };
 
   const getSellOrder = async () => {
-    const res = await Moralis.Plugins.opensea.getOrders({
-      network,
-      tokenAddress,
-      tokenId,
-      orderSide: 1,
-      page: 1, // pagination shows 20 orders each page
+    const sellOrders = await seaport.api.getOrders({
+      asset_contract_address: tokenAddress,
+      token_id: tokenId,
+      side: 0,
     });
-    console.log(res);
+
+    console.log(sellOrders);
   };
 
   const getBuyOrder = async () => {
-    const res = await Moralis.Plugins.opensea.getOrders({
-      network,
-      tokenAddress,
-      tokenId,
-      orderSide: 0,
-      page: 1, // pagination shows 20 orders each page
+    const buyOrders = await seaport.api.getOrders({
+      asset_contract_address: tokenAddress,
+      token_id: tokenId,
+      side: 1,
     });
-    console.log(res);
+
+    console.log(buyOrders);
   };
 
   const createSellOrder = async () => {
@@ -63,28 +69,51 @@ export default function Home() {
     const startAmount = 420;
     const endAmount = 69;
 
-    await Moralis.Plugins.opensea.createSellOrder({
-      network,
-      tokenAddress,
-      tokenId,
-      tokenType: "ERC1155",
-      userAddress,
+    // await Moralis.Plugins.opensea.createSellOrder({
+    //   network,
+    //   tokenAddress,
+    //   tokenId,
+    //   tokenType: "ERC1155",
+    //   userAddress,
+    //   startAmount,
+    //   endAmount,
+    //   expirationTime: startAmount > endAmount && expirationTime, // Only set if you startAmount > endAmount
+    // });
+
+    await seaport.createSellOrder({
+      asset: {
+        tokenAddress,
+        tokenId,
+        schemaName: "ERC1155" as WyvernSchemaName,
+      },
+      accountAddress: publicAddress,
       startAmount,
       endAmount,
-      expirationTime: startAmount > endAmount && expirationTime, // Only set if you startAmount > endAmount
+      expirationTime: startAmount > endAmount && expirationTime,
     });
 
     console.log("Create Sell Order Successful");
   };
 
   const createBuyOrder = async () => {
-    await Moralis.Plugins.opensea.createBuyOrder({
-      network,
-      tokenAddress,
-      tokenId,
-      tokenType: "ERC721",
-      amount: 0.0,
-      userAddress,
+    const {
+      tokenAddress: assetTA,
+      tokenId: assetTI,
+      name,
+      schemaName,
+    } = await getAsset();
+
+    await seaport.createBuyOrder({
+      asset: {
+        tokenAddress: assetTA,
+        tokenId: assetTI,
+        name,
+        schemaName,
+      },
+      accountAddress: publicAddress,
+      startAmount: 0,
+      // startAmount: 0.0,
+      // endAmount: 0.0,
       paymentTokenAddress: "0xc778417e063141139fce010982780140aa0cd5ab",
     });
 

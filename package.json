@@ -18,6 +18,7 @@
     "lottie-web": "^5.8.1",
     "moralis": "^0.0.176",
     "next": "latest",
+    "opensea-js": "^1.2.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-moralis": "^0.3.11"
