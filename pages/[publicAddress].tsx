@@ -10,17 +10,17 @@ type DataType = {
   assets: CollectionType[];
 };
 
-export default function CollectionSlug() {
+export default function PublicAddress() {
   const { query, isReady } = useRouter();
 
   if (!isReady) return <Loader />;
 
-  const { collectionSlug } = query;
+  const { publicAddress } = query;
   const { error, data, isLoading } = useQuery<DataType>(
-    "collection",
+    "publicAddress",
     async () => {
       const response = await fetch(
-        `https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=30&collection=${collectionSlug}`
+        `https://api.opensea.io/api/v1/assets?owner=${publicAddress}&order_direction=desc&offset=0&limit=20`
       );
       return response.json();
     }
@@ -29,6 +29,8 @@ export default function CollectionSlug() {
   if (error) return <CustomError error={error as Error} />;
   if (isLoading ?? !data) return <Loader />;
 
+  // @ts-ignore
+  if (data.owner) return <CustomError error={new Error("Address not found")} />;
   const { assets } = data;
 
   return (

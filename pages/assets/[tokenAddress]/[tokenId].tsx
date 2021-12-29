@@ -25,8 +25,6 @@ import { AssetType } from "types/AssetTypes";
 import classNames from "utils/class-names";
 import formatDate from "utils/format-date";
 
-type FailedFetchType = { success: boolean };
-
 export default function TokenId() {
   const { query, isReady } = useRouter();
   if (!isReady) return <Loader />;
