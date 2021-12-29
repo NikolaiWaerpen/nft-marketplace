@@ -6,6 +6,7 @@ import Button from "components/Button";
 import CustomError from "components/CustomError";
 import Loader from "components/Loader";
 import Modal from "components/Modal";
+import MoreFromCollection from "components/MoreFromCollection";
 import OfferForm from "components/OfferForm";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -38,44 +39,30 @@ export default function TokenId() {
   if (data.success && data.success === false)
     return <CustomError error={new Error("SUCCESS FALSE")} />;
 
-  const {
-    image_url,
-    name,
-    description,
-    orders,
-    sell_orders,
-    collection,
-    asset_contract,
-  } = data;
+  const { image_url, name, description, orders, collection, asset_contract } =
+    data;
 
-  console.log(data);
+  console.log("data", data);
 
   const details = [
     {
       name: "Listings",
       items: orders
         .filter(({ side }) => side === 1)
-        .map(
-          ({
-            base_price,
-            quantity,
-            expiration_time,
-            maker: {
-              user: { username },
-            },
-          }) => {
-            // console.log({
-            //   base_price, // TODO: Convert to ethereum
-            //   quantity, // TODO: ADD NOK conversion
-            //   expiration_time, // TODO: format this
-            //   username,
-            // });
+        .map(({ base_price, quantity, expiration_time, maker }) => {
+          // console.log({
+          //   base_price, // TODO: Convert to ethereum
+          //   quantity, // TODO: ADD NOK conversion
+          //   expiration_time, // TODO: format this
+          //   username,
+          // });
 
-            return `${
-              parseInt(base_price) / 1000000000000000000
-            }, ${quantity}, ${expiration_time}, ${username}`;
-          }
-        ),
+          return `${
+            parseInt(base_price) / 1000000000000000000
+          }, ${quantity}, ${expiration_time}, ${
+            maker.user ? maker.user.username : "user missing"
+          }`;
+        }),
     },
     {
       name: "Offers",
@@ -299,6 +286,8 @@ export default function TokenId() {
           </div>
         </div>
       </div>
+
+      <MoreFromCollection collectionSlug={collection.slug} />
 
       <Modal
         open={modalOpen}
