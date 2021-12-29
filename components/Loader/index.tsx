@@ -11,13 +11,13 @@ type LoaderProps = {
 export default function Loader({ message }: LoaderProps) {
   useEffect(() => {
     lottie.loadAnimation({
-      container: document.querySelector("#animationContainer") as Element,
+      container: document.querySelector("#loaderContainer") as Element,
       animationData: replaceColor("#eeeeee", "#eeeeee", loaderAnimation),
     });
   }, []);
   return (
     <FullscreenContainer>
-      <div id="animationContainer" className="w-56" />
+      <div id="loaderContainer" className="w-56" />
       {message && <h5>{message}</h5>}
     </FullscreenContainer>
   );

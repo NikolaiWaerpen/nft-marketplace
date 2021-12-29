@@ -27,8 +27,9 @@ export default function MoreFromCollection({
 
   if (error) return <CustomError error={error as Error} />;
   if (isLoading ?? !data) return <Loader />;
+
   //@ts-ignore
-  if (data.success && data.success === false)
+  if (data.success === false)
     return <CustomError error={new Error("SUCCESS FALSE")} />;
 
   return (

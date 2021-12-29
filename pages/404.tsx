@@ -9,17 +9,20 @@ import { useEffect } from "react";
 export default function Custom404() {
   useEffect(() => {
     lottie.loadAnimation({
-      container: document.querySelector("#animationContainer") as Element,
+      container: document.querySelector("#notFoundAnimationContainer"),
       animationData: replaceColor("#eeeeee", "#eeeeee", loaderAnimation),
     });
   }, []);
 
   return (
-    <FullscreenContainer>
-      <div className="min-h-full pt-16 pb-12 flex flex-col bg-white">
+    <div>
+      <div className="pt-16 pb-12 flex flex-col bg-white">
         <main className="flex-grow flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex-shrink-0 flex justify-center">
-            <div id="animationContainer" className="w-36" />
+            <div
+              id="notFoundAnimationContainer"
+              className="w-36 h-36 bg-indigo-600"
+            />
           </div>
           <div className="py-16">
             <div className="text-center">
@@ -30,7 +33,7 @@ export default function Custom404() {
                 Page not found.
               </h1>
               <p className="mt-2 text-base text-gray-500">
-                Sorry, We couldn't find the page you're looking for.
+                Sorry, we couldn't find the page you're looking for.
               </p>
               <div className="mt-6">
                 <Link href="/">
@@ -48,11 +51,11 @@ export default function Custom404() {
               href={MAIL_TO}
               className="text-sm font-medium text-gray-500 hover:text-gray-600"
             >
-              Contact me us support
+              Contact us for support
             </a>
           </nav>
         </footer>
       </div>
-    </FullscreenContainer>
+    </div>
   );
 }

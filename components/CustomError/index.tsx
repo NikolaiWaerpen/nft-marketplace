@@ -4,7 +4,6 @@ import { replaceColor } from "lottie-colorify";
 import loaderAnimation from "public/lottie/error.json";
 import Link from "next/link";
 import { MAIL_TO } from "consts";
-import FullscreenContainer from "components/FullscreenContainer";
 
 type CustomErrorProps = {
   error?: Error;
@@ -13,17 +12,17 @@ type CustomErrorProps = {
 export default function CustomError({ error }: CustomErrorProps) {
   useEffect(() => {
     lottie.loadAnimation({
-      container: document.querySelector("#animationContainer") as Element,
+      container: document.querySelector("#errorAnimationContainer") as Element,
       animationData: replaceColor("#eeeeee", "#eeeeee", loaderAnimation),
     });
   }, []);
 
   return (
-    <FullscreenContainer>
+    <div>
       <div className="min-h-full pt-16 pb-12 flex flex-col bg-white">
         <main className="flex-grow flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex-shrink-0 flex justify-center">
-            <div id="animationContainer" className="w-36" />
+            <div id="errorAnimationContainer" className="w-48" />
           </div>
           <div className="py-16">
             <div className="text-center">
@@ -35,7 +34,7 @@ export default function CustomError({ error }: CustomErrorProps) {
               </h1>
               {error && <div>{JSON.stringify(error.message, null, 2)}</div>}
               <div className="mt-6">
-                <Link href="">
+                <Link href="/">
                   <a className="text-base font-medium text-indigo-600 hover:text-indigo-500">
                     <span aria-hidden="true"> &larr;</span> Go back home
                   </a>
@@ -50,11 +49,11 @@ export default function CustomError({ error }: CustomErrorProps) {
               href={MAIL_TO}
               className="text-sm font-medium text-gray-500 hover:text-gray-600"
             >
-              Contact me for support
+              Contact us for support
             </a>
           </nav>
         </footer>
       </div>
-    </FullscreenContainer>
+    </div>
   );
 }

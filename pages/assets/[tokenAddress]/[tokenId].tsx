@@ -25,6 +25,8 @@ import { AssetType } from "types/AssetTypes";
 import classNames from "utils/class-names";
 import formatDate from "utils/format-date";
 
+type FailedFetchType = { success: boolean };
+
 export default function TokenId() {
   const { query, isReady } = useRouter();
   if (!isReady) return <Loader />;
@@ -45,14 +47,12 @@ export default function TokenId() {
 
   if (error) return <CustomError error={error as Error} />;
   if (isLoading ?? !data) return <Loader />;
-  //@ts-ignore
-  if (data.success && data.success === false)
-    return <CustomError error={new Error("SUCCESS FALSE")} />;
 
+  // @ts-ignore
+  if (data.success === false)
+    return <CustomError error={new Error("Asset not found")} />;
   const { image_url, name, description, orders, collection, asset_contract } =
     data;
-
-  console.log("data", data);
 
   const details = [
     {
