@@ -16,10 +16,14 @@ export default function Collection() {
   if (!isReady) return <Loader />;
 
   const { collectionSlug } = query;
-  const { error, data, isLoading } = useQuery<DataType>("collection", () =>
-    fetch(
-      `https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=30&collection=${collectionSlug}`
-    ).then((res) => res.json())
+  const { error, data, isLoading } = useQuery<DataType>(
+    "collection",
+    async () => {
+      const response = await fetch(
+        `https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=30&collection=${collectionSlug}`
+      );
+      return response.json();
+    }
   );
 
   if (error) return <CustomError error={error as Error} />;

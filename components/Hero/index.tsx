@@ -37,7 +37,7 @@ export default function Hero() {
       <div className="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full">
         <img
           className="absolute inset-0 w-full h-full object-cover lg:rounded-lg"
-          src="https://lh3.googleusercontent.com/XI2JjyJ_MnA7P-ZNijPhl3zU43TVaGJQWPE6kSUMEKEVBqp204OfYdfJ-ga2fxp819f1GYcqD95bfmz864Ey0XoAuto64Sn4FpoAtg=w600"
+          src="https://lh3.googleusercontent.com/6hLP_5mcbKU4AmiQJIzwyxI5D61Z7tOIE_z1XKdfOGElp1t9johiD8CNlYT7QHDmebUZmPPjHS7UTu4Ev9TzqZ6e0w7K-W3mxg-9qrY"
           alt=""
         />
       </div>
