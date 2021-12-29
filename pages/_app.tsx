@@ -1,9 +1,8 @@
+import queryClient from "lib/react-query-client";
 import { AppProps } from "next/app";
-import "../styles/globals.css";
 import { MoralisProvider } from "react-moralis";
 import { QueryClientProvider } from "react-query";
-import queryClient from "lib/react-query-client";
-import OfferModal from "components/OfferModal";
+import "../styles/globals.css";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (

@@ -87,6 +87,7 @@ export default function MoreFromCollection({
               image_url,
               image_preview_url,
               asset_contract: { address },
+              collection,
             }) => {
               return (
                 <div key={token_id} className="group relative">
@@ -116,10 +117,10 @@ export default function MoreFromCollection({
                         {/* </Link> */}
                       </h3>
                       <p className="mt-1 text-sm text-gray-500">
-                        (some additional info)
+                        {collection.name}
                       </p>
                     </div>
-                    <p className="text-sm font-medium text-gray-900">(price)</p>
+                    {/* <p className="text-sm font-medium text-gray-900">(price)</p> */}
                   </div>
                 </div>
               );

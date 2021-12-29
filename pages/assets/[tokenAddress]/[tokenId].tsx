@@ -1,4 +1,14 @@
-import { faTag } from "@fortawesome/free-solid-svg-icons";
+import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
+import {
+  faAlignLeft,
+  faInfo,
+  faList,
+  faMoneyBillWave,
+  faQuoteLeft,
+  faTag,
+  faTags,
+  faWallet,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Disclosure } from "@headlessui/react";
 import { MinusSmIcon, PlusSmIcon } from "@heroicons/react/outline";
@@ -47,6 +57,7 @@ export default function TokenId() {
   const details = [
     {
       name: "Listings",
+      icon: faTags,
       items: orders
         .filter(({ side }) => side === 1)
         .map(({ base_price, quantity, expiration_time, maker }) => {
@@ -66,6 +77,7 @@ export default function TokenId() {
     },
     {
       name: "Offers",
+      icon: faList,
       items: orders
         .filter(({ side }) => side === 0)
         .map(
@@ -104,57 +116,19 @@ export default function TokenId() {
               </span>
               <div className="flex flex-col gap-8">
                 {/* Description */}
-                <div>
-                  <span className="text-gray-900 text-sm font-medium">
-                    Description
-                  </span>
-                  <p className="mt-6 prose prose-sm">{description}</p>
+                <div className="border-t divide-y divide-gray-200">
+                  <div className="mt-6">
+                    <span className="text-indigo-600 text-sm font-medium">
+                      <FontAwesomeIcon icon={faAlignLeft} className="mr-2" />
+                      Description
+                    </span>
+                    <p className="mt-6 prose prose-sm">{description}</p>
+                  </div>
                 </div>
 
                 {/* About collection */}
                 <div>
-                  <Disclosure as="div">
-                    {({ open }) => (
-                      <>
-                        <h3>
-                          <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
-                            <span
-                              className={classNames(
-                                open ? "text-indigo-600" : "text-gray-900",
-                                "text-sm font-medium"
-                              )}
-                            >
-                              About {collection.name}
-                            </span>
-                            <span className="ml-6 flex items-center">
-                              {open ? (
-                                <MinusSmIcon
-                                  className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
-                                  aria-hidden="true"
-                                />
-                              ) : (
-                                <PlusSmIcon
-                                  className="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                                  aria-hidden="true"
-                                />
-                              )}
-                            </span>
-                          </Disclosure.Button>
-                        </h3>
-                        <Disclosure.Panel
-                          as="div"
-                          className="pb-6 prose prose-sm"
-                        >
-                          <p className="prose prose-sm">
-                            {collection.description}
-                          </p>
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
-
-                  {/* Details */}
-                  <div>
+                  <div className="border-t divide-y divide-gray-200">
                     <Disclosure as="div">
                       {({ open }) => (
                         <>
@@ -166,6 +140,57 @@ export default function TokenId() {
                                   "text-sm font-medium"
                                 )}
                               >
+                                <FontAwesomeIcon
+                                  icon={faQuoteLeft}
+                                  className="mr-2"
+                                />
+                                About {collection.name}
+                              </span>
+                              <span className="ml-6 flex items-center">
+                                {open ? (
+                                  <MinusSmIcon
+                                    className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                    aria-hidden="true"
+                                  />
+                                ) : (
+                                  <PlusSmIcon
+                                    className="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                                    aria-hidden="true"
+                                  />
+                                )}
+                              </span>
+                            </Disclosure.Button>
+                          </h3>
+                          <Disclosure.Panel
+                            as="div"
+                            className="pb-6 prose prose-sm"
+                          >
+                            <p className="prose prose-sm">
+                              {collection.description}
+                            </p>
+                          </Disclosure.Panel>
+                        </>
+                      )}
+                    </Disclosure>
+                  </div>
+
+                  {/* Details */}
+                  <div className="border-t divide-y divide-gray-200">
+                    <Disclosure as="div">
+                      {({ open }) => (
+                        <>
+                          <h3>
+                            <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
+                              <span
+                                className={classNames(
+                                  open ? "text-indigo-600" : "text-gray-900",
+                                  "text-sm font-medium"
+                                )}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faInfo}
+                                  className="mr-2"
+                                />
                                 Details
                               </span>
                               <span className="ml-6 flex items-center">
@@ -218,6 +243,7 @@ export default function TokenId() {
                         </>
                       )}
                     </Disclosure>
+                    {/* </div> */}
                   </div>
                 </div>
               </div>
@@ -228,16 +254,24 @@ export default function TokenId() {
                 {name}
               </h1>
 
-              <div className="mt-3">
-                <Button onClick={() => setModalOpen(true)}>
-                  <FontAwesomeIcon icon={faTag} />
+              <div className="mt-12 flex gap-4">
+                <Button onClick={() => setModalOpen(true)} icon={faWallet}>
+                  Buy now
+                </Button>
+                <Button onClick={() => setModalOpen(true)} icon={faTag}>
                   Make offer
+                </Button>
+                <Button
+                  onClick={() => setModalOpen(true)}
+                  icon={faMoneyBillWave}
+                >
+                  Create sell order
                 </Button>
               </div>
 
               <section aria-labelledby="details-heading" className="mt-12">
                 <div className="border-t divide-y divide-gray-200">
-                  {details.map(({ name, items }) => (
+                  {details.map(({ name, icon, items }) => (
                     <Disclosure as="div" key={name}>
                       {({ open }) => (
                         <>
@@ -249,6 +283,7 @@ export default function TokenId() {
                                   "text-sm font-medium"
                                 )}
                               >
+                                <FontAwesomeIcon icon={icon} className="mr-2" />
                                 {name}
                               </span>
                               <span className="ml-6 flex items-center">
@@ -270,11 +305,21 @@ export default function TokenId() {
                             as="div"
                             className="pb-6 prose prose-sm"
                           >
-                            <ul role="list">
-                              {items.map((item) => (
-                                <li key={item}>{item}</li>
-                              ))}
-                            </ul>
+                            {items.length ? (
+                              <ul role="list">
+                                {items.map((item) => (
+                                  <li key={item}>{item}</li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <div>
+                                <FontAwesomeIcon
+                                  icon={faTimesCircle}
+                                  className="mr-1"
+                                />
+                                No {name.toLowerCase()}
+                              </div>
+                            )}
                           </Disclosure.Panel>
                         </>
                       )}
