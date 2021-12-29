@@ -4,19 +4,6 @@ import Link from "next/link";
 import { useQuery } from "react-query";
 import { AssetType } from "types/AssetTypes";
 
-const products = [
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "$35",
-    color: "Black",
-  },
-];
-
 type MoreFromCollectionProps = {
   collectionSlug: string;
 };
@@ -101,11 +88,11 @@ export default function MoreFromCollection({
                   <div className="mt-4 flex justify-between">
                     <div>
                       <h3 className="text-sm text-gray-700">
-                        {/* <Link
-                          href={{
-                            pathname: "/assets/[tokenAddress]/[tokenId]",
-                            query: { tokenAddress: address, tokenId: token_id },
-                          }}
+                        {/* <Link // TODO: FIX THIS
+                          // href={{
+                          //   pathname: "/assets/[tokenAddress]/[tokenId]",
+                          //   query: { tokenAddress: address, tokenId: token_id },
+                          // }}
                         > */}
                         <a href={`/assets/${address}/${token_id}`}>
                           <span
