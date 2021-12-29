@@ -124,7 +124,7 @@ export default function Footer() {
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Solutions
+                  Explore
                 </h3>
                 <ul role="list" className="mt-4 space-y-4">
                   {navigation.solutions.map((item) => (
@@ -141,7 +141,7 @@ export default function Footer() {
               </div>
               <div className="mt-12 md:mt-0">
                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Support
+                  Stats
                 </h3>
                 <ul role="list" className="mt-4 space-y-4">
                   {navigation.support.map((item) => (
@@ -160,7 +160,7 @@ export default function Footer() {
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Company
+                  Resources
                 </h3>
                 <ul role="list" className="mt-4 space-y-4">
                   {navigation.company.map((item) => (
@@ -177,7 +177,7 @@ export default function Footer() {
               </div>
               <div className="mt-12 md:mt-0">
                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Legal
+                  Create
                 </h3>
                 <ul role="list" className="mt-4 space-y-4">
                   {navigation.legal.map((item) => (
