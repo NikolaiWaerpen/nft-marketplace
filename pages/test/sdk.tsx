@@ -1,4 +1,4 @@
-import AbsoluteContainer from "components/AbsoluteContainer";
+import FullscreenContainer from "components/FullscreenContainer";
 import Button from "components/Button";
 import Input from "components/Input";
 import seaport from "lib/seaport-client";
@@ -133,7 +133,7 @@ export default function sdk() {
   }, [isAuthenticated]);
 
   return (
-    <AbsoluteContainer>
+    <FullscreenContainer>
       <div className="mb-20 grid place-items-center">
         {isAuthenticated ? (
           <div className="gap-2 flex items-center">
@@ -196,6 +196,6 @@ export default function sdk() {
           )}
         </div>
       </div>
-    </AbsoluteContainer>
+    </FullscreenContainer>
   );
 }

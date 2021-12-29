@@ -14,10 +14,12 @@ export default function Layout({ children }: LayoutProps) {
   if (!isReady) return <Loader />;
 
   return (
-    <>
-      <Navigation query={query} />
-      {children}
+    <div>
+      <div className="w-full">
+        <Navigation query={query} />
+      </div>
+      <div className="pt-16">{children}</div>
       <Footer />
-    </>
+    </div>
   );
 }

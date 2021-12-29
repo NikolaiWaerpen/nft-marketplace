@@ -1,4 +1,4 @@
-import AbsoluteContainer from "components/AbsoluteContainer";
+import FullscreenContainer from "components/FullscreenContainer";
 import Button from "components/Button";
 import Input from "components/Input";
 import { useEffect, useMemo, useState } from "react";
@@ -104,7 +104,7 @@ export default function moralis() {
   }, [isAuthenticated]);
 
   return (
-    <AbsoluteContainer>
+    <FullscreenContainer>
       <div className="mb-20 grid place-items-center">
         {isAuthenticated ? (
           <div className="gap-2 flex items-center">
@@ -175,6 +175,6 @@ export default function moralis() {
           )}
         </div>
       </div>
-    </AbsoluteContainer>
+    </FullscreenContainer>
   );
 }

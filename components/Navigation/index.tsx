@@ -18,7 +18,7 @@ type NavigationProps = {
 
 export default function Navigation({ query }: NavigationProps) {
   return (
-    <Disclosure as="nav" className="bg-white shadow">
+    <Disclosure as="nav" className="bg-white shadow fixed left-0 right-0 z-50">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
@@ -35,10 +35,15 @@ export default function Navigation({ query }: NavigationProps) {
                     src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
                     alt="Workflow"
                   /> */}
-                  <h1 className="font-semibold text-gray-800 text-2xl">
-                    <FontAwesomeIcon icon={faArtstation} className="mr-2" />
-                    Torden Torg
-                  </h1>
+
+                  <a href="/" className="hover:cursor-pointer">
+                    <div>
+                      <h1 className="font-semibold text-indigo-600 text-2xl">
+                        <FontAwesomeIcon icon={faArtstation} className="mr-2" />
+                        Torden Torg
+                      </h1>
+                    </div>
+                  </a>
                 </div>
                 <div className="hidden lg:ml-6 lg:flex lg:space-x-8">
                   {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
@@ -221,10 +226,10 @@ export default function Navigation({ query }: NavigationProps) {
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-medium text-gray-800">
-                    Tom Cook
+                    Elon Musk
                   </div>
                   <div className="text-sm font-medium text-gray-500">
-                    tom@example.com
+                    teslastock@toohigh.tbh
                   </div>
                 </div>
                 <button

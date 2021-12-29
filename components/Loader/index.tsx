@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import lottie from "lottie-web";
 import { replaceColor } from "lottie-colorify";
 import loaderAnimation from "public/lottie/loader.json";
-import AbsoluteContainer from "components/AbsoluteContainer";
+import FullscreenContainer from "components/FullscreenContainer";
 
 type LoaderProps = {
   message?: string;
@@ -16,9 +16,9 @@ export default function Loader({ message }: LoaderProps) {
     });
   }, []);
   return (
-    <AbsoluteContainer>
+    <FullscreenContainer>
       <div id="animationContainer" className="w-56" />
       {message && <h5>{message}</h5>}
-    </AbsoluteContainer>
+    </FullscreenContainer>
   );
 }

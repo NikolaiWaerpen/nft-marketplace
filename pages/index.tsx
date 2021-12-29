@@ -44,10 +44,10 @@ function classNames(...classes) {
 
 export default function Home() {
   return (
-    <div>
+    <>
       <Hero />
       <Promotion />
       <Team />
-    </div>
+    </>
   );
 }
