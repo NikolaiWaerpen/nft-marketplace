@@ -116,7 +116,7 @@ export default function TokenId() {
               </span>
               <div className="flex flex-col gap-8">
                 {/* Description */}
-                <div className="border-t divide-y divide-gray-200">
+                <div className="border-t divide-y divide-gray-200 mt-12">
                   <div className="mt-6">
                     <span className="text-indigo-600 text-sm font-medium">
                       <FontAwesomeIcon icon={faAlignLeft} className="mr-2" />
