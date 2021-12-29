@@ -3,11 +3,6 @@ export default function Testimonial() {
     <section className="py-12 bg-white overflow-hidden md:py-20 lg:py-24 mt-36">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative">
-          {/* <img
-            className="mx-auto h-8"
-            src="https://tailwindui.com/img/logos/workcation-logo-indigo-600-mark-gray-800-and-indigo-600-text.svg"
-            alt="Workcation"
-          /> */}
           <blockquote className="mt-10">
             <div className="max-w-3xl mx-auto text-center text-2xl leading-9 font-medium text-gray-900">
               <p>

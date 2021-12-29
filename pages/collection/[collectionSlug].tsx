@@ -20,7 +20,7 @@ export default function CollectionSlug() {
     "collection",
     async () => {
       const response = await fetch(
-        `https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=30&collection=${collectionSlug}`
+        `https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=50&collection=${collectionSlug}`
       );
       return response.json();
     }
