@@ -18,6 +18,7 @@ import Loader from "components/Loader";
 import Modal from "components/Modal";
 import MoreFromCollection from "components/MoreFromCollection";
 import OfferForm from "components/OfferForm";
+import { TESTNET } from "consts";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQuery as reactQuery } from "react-query";
@@ -35,7 +36,9 @@ export default function TokenId() {
     "asset",
     async () => {
       const response = await fetch(
-        `https://api.opensea.io/api/v1/asset/${tokenAddress}/${tokenId}`
+        `https://${
+          TESTNET ? "testnets-" : ""
+        }api.opensea.io/api/v1/asset/${tokenAddress}/${tokenId}`
       );
       return response.json();
     }
