@@ -1,9 +1,13 @@
+import { faEthereum } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
+import { useState } from "react";
 
 type InputProps = React.ComponentPropsWithoutRef<"input"> & {
   label?: string;
   description?: string;
   error?: string | undefined;
+  price?: boolean;
 };
 
 export default function Input({
@@ -15,7 +19,10 @@ export default function Input({
   description,
   error,
   onChange,
+  price,
 }: InputProps) {
+  const [kroner, setKroner] = useState(0);
+
   return (
     <div>
       <div
@@ -37,21 +44,36 @@ export default function Input({
           </label>
         )}
         {description && <p>{description}</p>}
-        <input
-          type={type}
-          name={type}
-          id={type}
-          className={`block w-full border-0 p-0 focus:ring-0 sm:text-sm ${
-            error
-              ? "text-red-900 placeholder-red-300"
-              : "text-gray-900 placeholder-gray-500"
-          }  `}
-          placeholder={placeholder}
-          onChange={onChange}
-          value={value}
-          aria-invalid="true"
-          aria-describedby={`${type}-error`}
-        />
+        <div className="flex">
+          {price && (
+            <div className="flex items-center gap-1.5 pr-2 border-r text-gray-800">
+              <FontAwesomeIcon icon={faEthereum} />
+              <span className="">WETH</span>
+            </div>
+          )}
+          <input
+            type={type}
+            name={type}
+            id={type}
+            className={`block w-full border-0 p-0 focus:ring-0 sm:text-sm ${
+              error
+                ? "text-red-900 placeholder-red-300"
+                : "text-gray-900 placeholder-gray-500"
+            } ${price ? "pl-2" : ""}`}
+            placeholder={placeholder}
+            onChange={onChange}
+            value={value}
+            aria-invalid="true"
+            aria-describedby={`${type}-error`}
+          />
+          {price && (
+            <span className="text-gray-500 pl-2 border-l whitespace-nowrap">
+              {kroner} kr
+            </span>
+            // <div className="flex items-center gap-1.5 ">
+            // </div>
+          )}
+        </div>
         {error && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
             <ExclamationCircleIcon

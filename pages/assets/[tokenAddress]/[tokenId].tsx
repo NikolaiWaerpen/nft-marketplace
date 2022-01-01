@@ -256,16 +256,13 @@ export default function TokenId() {
               </h1>
 
               <div className="mt-12 flex gap-4">
-                <Button onClick={() => setModalOpen(true)} icon={faWallet}>
+                <Button onClick={() => {}} icon={faWallet}>
                   Buy now
                 </Button>
                 <Button onClick={() => setModalOpen(true)} icon={faTag}>
                   Make offer
                 </Button>
-                <Button
-                  onClick={() => setModalOpen(true)}
-                  icon={faMoneyBillWave}
-                >
+                <Button onClick={() => {}} icon={faMoneyBillWave}>
                   Create sell order
                 </Button>
               </div>
