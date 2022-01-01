@@ -60,41 +60,45 @@ export default function TokenId() {
       name: "Listings",
       icon: faTags,
       items: orders
-        .filter(({ side }) => side === 1)
-        .map(({ base_price, quantity, expiration_time, maker }) => {
-          // console.log({
-          //   base_price, // TODO: Convert to ethereum
-          //   quantity, // TODO: ADD NOK conversion
-          //   expiration_time, // TODO: format this
-          //   username,
-          // });
+        ? []
+        : orders
+            .filter(({ side }) => side === 1)
+            .map(({ base_price, quantity, expiration_time, maker }) => {
+              // console.log({
+              //   base_price, // TODO: Convert to ethereum
+              //   quantity, // TODO: ADD NOK conversion
+              //   expiration_time, // TODO: format this
+              //   username,
+              // });
 
-          return `${
-            parseInt(base_price) / 1000000000000000000
-          }, ${quantity}, ${expiration_time}, ${
-            maker.user ? maker.user.username : "user missing"
-          }`;
-        }),
+              return `${
+                parseInt(base_price) / 1000000000000000000
+              }, ${quantity}, ${expiration_time}, ${
+                maker.user ? maker.user.username : "user missing"
+              }`;
+            }),
     },
     {
       name: "Offers",
       icon: faList,
       items: orders
-        .filter(({ side }) => side === 0)
-        .map(
-          ({
-            base_price,
-            quantity,
-            expiration_time,
-            maker: {
-              user: { username },
-            },
-          }) => {
-            return `${
-              parseInt(base_price) / 1000000000000000000
-            }, ${quantity}, ${expiration_time}, ${username}`;
-          }
-        ),
+        ? []
+        : orders
+            .filter(({ side }) => side === 0)
+            .map(
+              ({
+                base_price,
+                quantity,
+                expiration_time,
+                maker: {
+                  user: { username },
+                },
+              }) => {
+                return `${
+                  parseInt(base_price) / 1000000000000000000
+                }, ${quantity}, ${expiration_time}, ${username}`;
+              }
+            ),
     },
   ];
 
@@ -337,6 +341,7 @@ export default function TokenId() {
         setOpen={setModalOpen}
         content={
           <OfferForm
+            setModalOpen={setModalOpen}
             tokenAddress={tokenAddress as string}
             tokenId={tokenId as string}
           />

@@ -1,34 +1,17 @@
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "components/Button";
-import Dropdown from "components/Dropdown";
-import Input from "components/Input";
-import Label from "components/Label";
-import TextArea from "components/TextArea";
-import { ACCOUNT_ADDRESS, MAX_QUANTITY } from "consts";
+import PriceInput from "components/PriceInput";
+import { ACCOUNT_ADDRESS, MAX_QUANTITY, TESTNET } from "consts";
 import { Form, Formik } from "formik";
-import seaport from "lib/seaport-client";
-import { OpenSeaPort, Network } from "opensea-js";
-import { OpenSeaAsset, WyvernSchemaName } from "opensea-js/lib/types";
+import useSeaport from "hooks/useSeaport";
+import { Network, OpenSeaPort } from "opensea-js";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import getEthereumPrice from "utils/get-ethereum-price";
+// import createBuyOrder from "utils/opensea/create-buy-order";
 import * as yup from "yup";
 
-// const { ethereum } = window;
-// const seaport = new OpenSeaPort(ethereum, {
-//   networkName: Network.Rinkeby,
-//   // apiBaseUrl: API_BASE_RINKEBY,
-// });
-
-const validationSchema = yup.object({
-  quantity: yup
-    .string()
-    .required("Quantity required")
-    .test("len", `Must be less than ${MAX_QUANTITY} characters`, (value) => {
-      if (!value) return true;
-      return value.length <= MAX_QUANTITY;
-    }),
-  pricePerItem: yup.string(),
-  offerExpiration: yup.string(),
-});
+import { OpenSeaAsset, WyvernSchemaName } from "opensea-js/lib/types";
 
 async function getAsset(tokenAddress: string, tokenId: string, seaport: any) {
   const asset: OpenSeaAsset = await seaport.api.getAsset({
@@ -41,12 +24,11 @@ async function getAsset(tokenAddress: string, tokenId: string, seaport: any) {
 }
 
 async function createBuyOrder(
+  seaport: OpenSeaPort,
   tokenAddress: string,
   tokenId: string,
   pricePerItem: string,
-  seaport: any,
-  quantity?: string,
-  offerExpiration?: string
+  offerExpiration?: number
 ) {
   const {
     tokenId: responseTokenId,
@@ -55,8 +37,7 @@ async function createBuyOrder(
     schemaName,
   } = await getAsset(tokenAddress, tokenId, seaport);
 
-  console.log(pricePerItem);
-  const offer = await seaport.createBuyOrder({
+  await seaport.createBuyOrder({
     asset: {
       tokenId: responseTokenId,
       tokenAddress: responseTokenAddress,
@@ -67,58 +48,108 @@ async function createBuyOrder(
     },
     // Your wallet address (the bidder's address):
     accountAddress: ACCOUNT_ADDRESS,
+    // Expiration
+    expirationTime: offerExpiration,
     // Value of the offer, in wrapped ETH:
     startAmount: parseInt(pricePerItem),
   });
 
-  console.log(offer);
   console.log("offer created successfully");
 }
 
+const validationSchema = yup.object({
+  pricePerItem: yup
+    .string()
+    .required("Price required")
+    .test("len", `Must be less than ${MAX_QUANTITY} characters`, (value) => {
+      if (!value) return true;
+      return value.length <= MAX_QUANTITY;
+    }),
+  // offerExpiration: yup.string(),
+});
+
 const initialValues = {
   pricePerItem: "",
-  offerExpiration: "",
+  offerExpiration: Math.round(Date.now() / 1000 + 60 * 60 * 24 * 7),
 };
 
-type OfferFormType = { tokenAddress: string; tokenId: string };
+type OfferFormType = {
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  tokenAddress: string;
+  tokenId: string;
+};
 
-export default function OfferForm({ tokenAddress, tokenId }: OfferFormType) {
+export default function OfferForm({
+  setModalOpen,
+  tokenAddress,
+  tokenId,
+}: OfferFormType) {
   // @ts-ignore
+  // const seaport = useSeaport();
+  //@ts-ignore
   const seaport = new OpenSeaPort(ethereum, {
-    networkName: Network.Main,
-    apiKey: "e7c75f6bcbca43d8b72d2ae91ace633b",
-    // apiBaseUrl: API_BASE_RINKEBY,
+    networkName: TESTNET ? Network.Rinkeby : Network.Main,
+    apiKey: process.env.OPENSEA_API_KEY,
   });
+
+  const [ethPrice, setEthPrice] = useState(0);
+
+  useEffect(() => {
+    async function ethereumPrice() {
+      const price = await getEthereumPrice();
+      setEthPrice(price);
+    }
+
+    ethereumPrice();
+  }, []);
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={async ({ pricePerItem, offerExpiration }, { resetForm }) => {
-        createBuyOrder(tokenAddress, tokenId, pricePerItem, seaport);
+        await createBuyOrder(
+          seaport,
+          tokenAddress,
+          tokenId,
+          pricePerItem,
+          offerExpiration
+        );
+
+        resetForm();
+        await setModalOpen(false);
       }}
+      initialStatus={{ priceInNok: "0.00" }}
       validationSchema={validationSchema}
     >
       {({
         values: { pricePerItem, offerExpiration },
         setFieldValue,
+        status,
+        setStatus,
         errors,
         isSubmitting,
-      }) => (
-        <Form>
-          <div className="flex flex-col gap-4">
-            <Input
-              label="Price"
-              // required
-              price
-              error={errors.pricePerItem}
-              placeholder="Amount"
-              type="text"
-              value={pricePerItem}
-              onChange={(event) =>
-                setFieldValue("pricePerItem", event?.target.value)
-              }
-            />
-            <div>
+      }) => {
+        const buttonDisabled = errors || isSubmitting ? true : false;
+
+        return (
+          <Form>
+            <div className="flex flex-col gap-4">
+              <PriceInput
+                label="Price"
+                // required
+                price={status.priceInNok} // TODO: FIX THIS
+                error={errors.pricePerItem}
+                placeholder="Amount"
+                type="text"
+                value={pricePerItem}
+                onChange={(event) => {
+                  setFieldValue("pricePerItem", event?.target.value);
+                  // setPriceInNok(
+                  //   (parseFloat(pricePerItem) * ethPrice).toString()
+                  // );
+                }}
+              />
+              {/* <div>
               <Label>Offer expiration</Label>
               <div className="flex">
                 <Dropdown />
@@ -132,17 +163,22 @@ export default function OfferForm({ tokenAddress, tokenId }: OfferFormType) {
                   }
                 />
               </div>
-            </div>
+            </div> */}
 
-            <Button type="submit" loading={isSubmitting}>
-              <div className="flex gap-2 place-items-center">
-                <FontAwesomeIcon icon={faCheck} />
-                Make offer
-              </div>
-            </Button>
-          </div>
-        </Form>
-      )}
+              <Button
+                type="submit"
+                loading={isSubmitting}
+                // disabled={buttonDisabled} TODO: Add this functionality
+              >
+                <div className="flex gap-2 place-items-center">
+                  <FontAwesomeIcon icon={faCheck} />
+                  Make offer
+                </div>
+              </Button>
+            </div>
+          </Form>
+        );
+      }}
     </Formik>
   );
 }

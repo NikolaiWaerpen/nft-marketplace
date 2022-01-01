@@ -7,9 +7,10 @@ type InputProps = React.ComponentPropsWithoutRef<"input"> & {
   label?: string;
   description?: string;
   error?: string | undefined;
+  price?: string;
 };
 
-export default function Input({
+export default function PriceInput({
   placeholder = "",
   required,
   type,
@@ -18,6 +19,7 @@ export default function Input({
   description,
   error,
   onChange,
+  price,
 }: InputProps) {
   return (
     <div>
@@ -40,23 +42,37 @@ export default function Input({
           </label>
         )}
         {description && <p>{description}</p>}
-        <input
-          type={type}
-          name={type}
-          id={type}
-          className={`block w-full border-0 p-0 focus:ring-0 sm:text-sm ${
-            error
-              ? "text-red-900 placeholder-red-300"
-              : "text-gray-900 placeholder-gray-500"
-          }`}
-          placeholder={placeholder}
-          onChange={onChange}
-          value={value}
-          aria-invalid="true"
-          aria-describedby={`${type}-error`}
-        />
-
-        {error && (
+        <div className="flex">
+          {price !== undefined && (
+            <div className="flex items-center gap-1.5 pr-2 border-r text-gray-800">
+              <FontAwesomeIcon icon={faEthereum} />
+              <span className="">WETH</span>
+            </div>
+          )}
+          <input
+            type={type}
+            name={type}
+            id={type}
+            className={`block w-full border-0 p-0 focus:ring-0 sm:text-sm ${
+              error
+                ? "text-red-900 placeholder-red-300"
+                : "text-gray-900 placeholder-gray-500"
+            } ${price !== undefined ? "pl-2" : ""}`}
+            placeholder={placeholder}
+            onChange={onChange}
+            value={value}
+            aria-invalid="true"
+            aria-describedby={`${type}-error`}
+          />
+          {price && (
+            <span className="text-gray-500 pl-2 border-l whitespace-nowrap">
+              {price} kr
+            </span>
+            // <div className="flex items-center gap-1.5 ">
+            // </div>
+          )}
+        </div>
+        {error && !price && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
             <ExclamationCircleIcon
               className="h-5 w-5 text-red-500"
