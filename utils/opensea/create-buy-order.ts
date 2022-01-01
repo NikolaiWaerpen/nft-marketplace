@@ -17,6 +17,16 @@ export default async function createBuyOrder(
     schemaName,
   } = await getAsset(tokenAddress, tokenId, seaport);
 
+  console.log(
+    responseTokenId,
+    responseTokenAddress,
+    name,
+    WyvernSchemaName.ERC1155,
+    ACCOUNT_ADDRESS,
+    offerExpiration,
+    parseFloat(pricePerItem)
+  );
+
   const offer = await seaport.createBuyOrder({
     asset: {
       tokenId: responseTokenId,
@@ -29,9 +39,9 @@ export default async function createBuyOrder(
     // Your wallet address (the bidder's address):
     accountAddress: ACCOUNT_ADDRESS,
     // Expiration
-    expirationTime: offerExpiration,
+    // expirationTime: offerExpiration,
     // Value of the offer, in wrapped ETH:
-    startAmount: parseInt(pricePerItem),
+    startAmount: parseFloat(pricePerItem),
   });
 
   console.log(

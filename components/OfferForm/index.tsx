@@ -2,60 +2,15 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "components/Button";
 import PriceInput from "components/PriceInput";
-import { ACCOUNT_ADDRESS, MAX_QUANTITY, TESTNET } from "consts";
+import { MAX_QUANTITY, TESTNET } from "consts";
 import { Form, Formik } from "formik";
 import useSeaport from "hooks/useSeaport";
 import { Network, OpenSeaPort } from "opensea-js";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import getEthereumPrice from "utils/get-ethereum-price";
+import createBuyOrder from "utils/opensea/create-buy-order";
 // import createBuyOrder from "utils/opensea/create-buy-order";
 import * as yup from "yup";
-
-import { OpenSeaAsset, WyvernSchemaName } from "opensea-js/lib/types";
-
-async function getAsset(tokenAddress: string, tokenId: string, seaport: any) {
-  const asset: OpenSeaAsset = await seaport.api.getAsset({
-    tokenAddress,
-    tokenId,
-  });
-
-  console.log(asset);
-  return asset;
-}
-
-async function createBuyOrder(
-  seaport: OpenSeaPort,
-  tokenAddress: string,
-  tokenId: string,
-  pricePerItem: string,
-  offerExpiration?: number
-) {
-  const {
-    tokenId: responseTokenId,
-    tokenAddress: responseTokenAddress,
-    name,
-    schemaName,
-  } = await getAsset(tokenAddress, tokenId, seaport);
-
-  await seaport.createBuyOrder({
-    asset: {
-      tokenId: responseTokenId,
-      tokenAddress: responseTokenAddress,
-      name,
-      // Only needed for the short-name auction, not ENS names
-      // that have been sold once already:
-      schemaName: WyvernSchemaName.ERC1155,
-    },
-    // Your wallet address (the bidder's address):
-    accountAddress: ACCOUNT_ADDRESS,
-    // Expiration
-    expirationTime: offerExpiration,
-    // Value of the offer, in wrapped ETH:
-    startAmount: parseInt(pricePerItem),
-  });
-
-  console.log("offer created successfully");
-}
 
 const validationSchema = yup.object({
   pricePerItem: yup
@@ -84,14 +39,7 @@ export default function OfferForm({
   tokenAddress,
   tokenId,
 }: OfferFormType) {
-  // @ts-ignore
-  // const seaport = useSeaport();
-  //@ts-ignore
-  const seaport = new OpenSeaPort(ethereum, {
-    networkName: TESTNET ? Network.Rinkeby : Network.Main,
-    apiKey: process.env.OPENSEA_API_KEY,
-  });
-
+  const seaport = useSeaport();
   const [ethPrice, setEthPrice] = useState(0);
 
   useEffect(() => {
