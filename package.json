@@ -17,7 +17,7 @@
     "formik": "^2.2.9",
     "lottie-colorify": "^0.8.0",
     "lottie-web": "^5.8.1",
-    "moralis": "^0.0.176",
+    "moralis": "^0.0.183",
     "next": "latest",
     "opensea-js": "^1.2.7",
     "react": "^17.0.2",
