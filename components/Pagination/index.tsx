@@ -3,40 +3,40 @@ import {
   ArrowNarrowRightIcon,
 } from "@heroicons/react/solid";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import range from "utils/range";
 
 type PaginationProps = {
-  count: number;
+  totalPages?: number;
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
 };
 
-export default function Pagination({}: PaginationProps) {
-  const [pageNumber, setPageNumber] = useState(1);
+export default function Pagination({
+  page,
+  setPage,
+  totalPages,
+}: PaginationProps) {
   const [previousDisabled, setPreviousDisabled] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(false);
 
   const maxPage = 10;
 
   useEffect(() => {
-    if (pageNumber === 1) setPreviousDisabled(true);
+    if (page === 1) setPreviousDisabled(true);
     else setPreviousDisabled(false);
-  }, [pageNumber]);
+  }, [page]);
 
   useEffect(() => {
-    if (pageNumber === maxPage) setNextDisabled(true);
+    if (page === maxPage) setNextDisabled(true);
     else setNextDisabled(false);
-  }, [pageNumber]);
+  }, [page]);
 
   return (
     <nav className="border-t border-gray-200 px-4 flex items-center justify-between sm:px-0">
-      <div
-        className="-mt-px w-0 flex-1 flex"
-        // className={classNames(
-        //   previousDisabled ? "hover:cursor-not-allowed" : "",
-        //   "-mt-px w-0 flex-1 flex"
-        // )}
-      >
-        <a
-          href="#"
+      <div className="-mt-px w-0 flex-1 flex">
+        <button
+          onClick={() => setPage((previous) => previous - 1)}
           className="border-t-2 border-transparent pt-4 pr-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
         >
           <ArrowNarrowLeftIcon
@@ -44,54 +44,31 @@ export default function Pagination({}: PaginationProps) {
             aria-hidden="true"
           />
           Previous
-        </a>
+        </button>
       </div>
+
+      {/* TODO: LOGIC IF PAGES IS TOO MUCH - COMPONENT HAS TO WRAP */}
       <div className="hidden md:-mt-px md:flex">
-        <a
-          href="#"
-          className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-        >
-          1
-        </a>
-        {/* Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" */}
-        <a
-          href="#"
-          className="border-indigo-500 text-indigo-600 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-          aria-current="page"
-        >
-          2
-        </a>
-        <a
-          href="#"
-          className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-        >
-          3
-        </a>
-        <span className="border-transparent text-gray-500 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium">
-          ...
-        </span>
-        <a
-          href="#"
-          className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-        >
-          8
-        </a>
-        <a
-          href="#"
-          className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-        >
-          9
-        </a>
-        <a
-          href="#"
-          className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-        >
-          10
-        </a>
+        {totalPages &&
+          range(totalPages).map((totalPage, key) => {
+            return (
+              <button
+                className={classNames(
+                  key === page
+                    ? "border-indigo-500 text-indigo-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
+                  "border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
+                )}
+                onClick={() => setPage(totalPage - 1)}
+              >
+                {totalPage}
+              </button>
+            );
+          })}
       </div>
       <div className="-mt-px w-0 flex-1 flex justify-end">
-        <a
-          href="#"
+        <button
+          onClick={() => setPage((previous) => previous + 1)}
           className="border-t-2 border-transparent pt-4 pl-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
         >
           Next
@@ -99,7 +76,7 @@ export default function Pagination({}: PaginationProps) {
             className="ml-3 h-5 w-5 text-gray-400"
             aria-hidden="true"
           />
-        </a>
+        </button>
       </div>
     </nav>
   );

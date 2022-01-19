@@ -1,6 +1,7 @@
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import classNames from "classnames";
+import Button from "components/Button";
 import CustomError from "components/CustomError";
 import Loader from "components/Loader";
 import Pagination from "components/Pagination";
@@ -16,10 +17,10 @@ import removeQueryParams from "utils/remove-query-params";
 const sortOptions = [
   // { name: "Most Popular", href: "#" },
   // { name: "Best Rating", href: "#" },
-  { name: "Newest", href: "&order_direction=desc" },
-  { name: "Oldest", href: "&order_direction=asc" },
-  { name: "Price: Low to High", href: "#" },
-  { name: "Price: High to Low", href: "#" },
+  { name: "Newest", sortString: "&order_direction=desc" },
+  { name: "Oldest", sortString: "&order_direction=asc" },
+  // { name: "Price: Low to High", sorting: "#" },
+  // { name: "Price: High to Low", sorting: "#" },
 ];
 // const filters = [
 //   {
@@ -70,13 +71,21 @@ const sortOptions = [
 //   },
 // ];
 
+const ASSET_AMOUNT = 12;
+
 type AssetsDataType = {
   assets: CollectionType[];
 };
 
-async function fetchAssets(collectionSlug: string) {
+async function fetchAssets(
+  collectionSlug: string,
+  sorting: string,
+  page: number
+) {
+  const offset = page ? `&offset=${page * ASSET_AMOUNT}` : "";
+
   const response = await fetch(
-    `${OPENSEA_API_URL}/assets?collection=${collectionSlug}&`
+    `${OPENSEA_API_URL}/assets?collection=${collectionSlug}&limit=${ASSET_AMOUNT}${sorting}${offset}`
   );
 
   const jsonResponse = await response.json();
@@ -118,6 +127,8 @@ export default function CollectionSlug() {
     isReady,
   } = useRouter();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [sorting, setSorting] = useState("");
+  const [page, setPage] = useState(0);
 
   if (!isReady) return <Loader />;
 
@@ -125,8 +136,10 @@ export default function CollectionSlug() {
     error: assetsError,
     data: assetsData,
     isLoading: assetsIsLoading,
-  } = useQuery<AssetsDataType>(["assets", collectionSlug], () =>
-    fetchAssets(collectionSlug as string)
+  } = useQuery<AssetsDataType>(
+    ["assets", collectionSlug, sorting, page],
+    () => fetchAssets(collectionSlug as string, sorting, page),
+    { keepPreviousData: true }
   );
 
   const {
@@ -148,16 +161,15 @@ export default function CollectionSlug() {
 
   if (assetsError || collectionError || collectionStatsError)
     return <CustomError error={assetsError as Error} />;
+
   const loading =
-    assetsIsLoading ||
-    !assetsData ||
     collectionIsLoading ||
     !collectionData ||
     collectionStatsIsLoading ||
     !collectionStatsData;
+
   if (loading) return <Loader />;
 
-  const { assets } = assetsData;
   const { collection } = collectionData;
   const { stats } = collectionStatsData;
 
@@ -228,7 +240,7 @@ export default function CollectionSlug() {
               </dl>
             </div>
           </div>
-          <p className="mt-4 max-w-3xl mx-auto text-base text-gray-500">
+          <p className="mt-4 max-w-3xl mx-auto text-base text-gray-500 truncate">
             {collection.description}
           </p>
         </div>
@@ -265,19 +277,21 @@ export default function CollectionSlug() {
               >
                 <Menu.Items className="origin-top-left absolute left-0 z-10 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="py-1">
-                    {sortOptions.map(({ href, name }, key) => (
+                    {sortOptions.map(({ sortString, name }, key) => (
                       <Menu.Item key={key}>
                         {({ active }) => (
-                          <Link href={`${collectionSlug}${href}`}>
-                            <a
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm font-medium text-gray-900"
-                              )}
-                            >
-                              {name}
-                            </a>
-                          </Link>
+                          <button
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm font-medium text-gray-900 w-full text-left"
+                            )}
+                            onClick={() => {
+                              setPage(0);
+                              setSorting(sortString);
+                            }}
+                          >
+                            {name}
+                          </button>
                         )}
                       </Menu.Item>
                     ))}
@@ -358,8 +372,10 @@ export default function CollectionSlug() {
         <section aria-labelledby="products-heading" className="mt-8">
           <h2 className="sr-only">Products</h2>
           <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {assets &&
-              assets.map(
+            {(!assetsData || assetsIsLoading) && <Loader />}
+            {assetsData &&
+              assetsData.assets &&
+              assetsData.assets.map(
                 (
                   {
                     name,
@@ -403,7 +419,22 @@ export default function CollectionSlug() {
         </section>
 
         <div className="mt-8">
-          <Pagination count={5} />
+          {/* <Button
+            onClick={() => setPage((previous) => previous - 1)}
+            disabled={page === 0}
+          >
+            Previous
+          </Button>
+          <Button onClick={() => setPage((previous) => previous + 1)}>
+            Next
+          </Button> */}
+          {stats.count > ASSET_AMOUNT && (
+            <Pagination
+              totalPages={Math.floor(stats.count / ASSET_AMOUNT)}
+              page={page}
+              setPage={setPage}
+            />
+          )}
         </div>
       </div>
     </div>
