@@ -2117,7 +2117,7 @@ bignumber.js@^6.0.0:
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-6.0.0.tgz#bbfa047644609a5af093e9cbd83b0461fa3f6002"
   integrity sha512-x247jIuy60/+FtMRvscqfxtVHQf8AGx2hm9c6btkgC0x/hp9yt+teISNhvF8WlwRkCc5yF2fDECH8SIMe8j+GA==
 
-bignumber.js@^9.0.0:
+bignumber.js@^9.0.0, bignumber.js@^9.0.2:
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.2.tgz#71c6c6bed38de64e24a65ebe16cfcf23ae693673"
   integrity sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==
@@ -2665,6 +2665,11 @@ classnames@2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
+
+classnames@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
+  integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
 
 clean-stack@^2.0.0:
   version "2.2.0"
@@ -6074,15 +6079,16 @@ mock-fs@^4.1.0:
   resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-4.14.0.tgz#ce5124d2c601421255985e6e94da80a7357b1b18"
   integrity sha512-qYvlv/exQ4+svI3UOvPUpLDF0OMX5euvUH0Ny4N5QyRyhNdgAgUrVH3iUINSzEPLvx0kbo/Bp28GJKIqvE7URw==
 
-moralis@^0.0.176:
-  version "0.0.176"
-  resolved "https://registry.yarnpkg.com/moralis/-/moralis-0.0.176.tgz#2d7dd315296444c944ceeb9135c954212fd2e933"
-  integrity sha512-d3RhXc/LeMym9VyG1sjNKvKJ9yBjJU/AiKWU8y5hmH+zswww3K4qXgF3dxpLKhAJq/oX38b7fY613fUxiHlx/w==
+moralis@^0.0.183:
+  version "0.0.183"
+  resolved "https://registry.yarnpkg.com/moralis/-/moralis-0.0.183.tgz#ee6702b163c45e00dc6345189348cf0f85c84c51"
+  integrity sha512-7t6/br74IHS7029/VOiMo1m8kd71JAAkh33JiSq8rfdCwcmQv5VWvqt6Hh00SlA4t+kYvwCZy0DKL3HUwRr3/Q==
   dependencies:
     "@babel/runtime" "^7.16.5"
     "@babel/runtime-corejs3" "^7.16.5"
     "@metamask/detect-provider" "^1.2.0"
     axios "^0.24.0"
+    bignumber.js "^9.0.2"
     lint-staged "^12.1.2"
     react-native-crypto-js "1.0.0"
     uuid "^8.3.2"

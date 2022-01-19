@@ -3,8 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/solid";
+import Button from "components/Button";
+import { NAVIGATION } from "consts";
+import useMe from "hooks/useMe";
 import { NextParsedUrlQuery } from "next/dist/server/request-meta";
-import { Router, useRouter } from "next/router";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 
 function classNames(...classes) {
@@ -17,7 +21,9 @@ type NavigationProps = {
 
 export default function Navigation({ query }: NavigationProps) {
   const [searchInput, setSearchInput] = useState("");
-  const router = useRouter();
+  const router = useRouter(),
+    { route } = router;
+  const { me, setMe } = useMe();
 
   return (
     <Disclosure as="nav" className="bg-white shadow fixed left-0 right-0 z-50">
@@ -48,31 +54,23 @@ export default function Navigation({ query }: NavigationProps) {
                   </a>
                 </div>
                 <div className="hidden lg:ml-6 lg:flex lg:space-x-8">
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                  <a
-                    href="/collection/rude-boys"
-                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                  >
-                    Explore
-                  </a>
-                  <a
-                    href="#"
-                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                  >
-                    Stats
-                  </a>
-                  <a
-                    href="#"
-                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                  >
-                    Resources
-                  </a>
-                  <a
-                    href="#"
-                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                  >
-                    Create
-                  </a>
+                  {NAVIGATION.main.map(({ name, href }) => {
+                    const currentlyActive = route === href;
+                    return (
+                      <Link key={name} href={href}>
+                        <a
+                          className={classNames(
+                            currentlyActive
+                              ? "border-indigo-500 text-gray-900"
+                              : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                            "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                          )}
+                        >
+                          {name}
+                        </a>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
               <div className="flex-1 flex items-center justify-center px-2 lg:ml-6 lg:justify-end">
@@ -120,25 +118,45 @@ export default function Navigation({ query }: NavigationProps) {
                 </Disclosure.Button>
               </div>
               <div className="hidden lg:ml-4 lg:flex lg:items-center">
-                <button
-                  type="button"
-                  className="flex-shrink-0 bg-white p-1 text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-
-                {/* Profile dropdown */}
-                <Menu as="div" className="ml-4 relative flex-shrink-0">
+                {/* USER LARGE SCREEN */}
+                {/* TODO: ADD THIS BACK */}
+                {/* <Menu as="div" className="ml-4 relative flex-shrink-0">
                   <div>
-                    <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTc5OTk2ODUyMTMxNzM0ODcy/gettyimages-1229892983-square.jpg"
-                        alt=""
-                      />
-                    </Menu.Button>
+                    {me ? (
+                      <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <span className="sr-only">Open user menu</span>
+                        <span className="w-12 truncate">{me}</span>
+                        <img
+                          className="h-8 w-8 rounded-full"
+                          src="https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTc5OTk2ODUyMTMxNzM0ODcy/gettyimages-1229892983-square.jpg"
+                          alt=""
+                        />
+                      </Menu.Button>
+                    ) : (
+                      // TODO: MAKE THIS LIKE OPENSEA, current solution is temporary due to refresh bug
+                      <Button
+                        onClick={async () => {
+                          // @ts-ignore
+                          const publicAddresses = await ethereum.request({
+                            method: "eth_requestAccounts",
+                          });
+                          const publicAddress = publicAddresses[0] as string;
+
+                          await setMe(publicAddress);
+                        }}
+                      >
+                        Connect to metamask
+                      </Button>
+                      // <Link href="login">
+                      //   <a className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      //     <img
+                      //       className="h-8 w-8 rounded-full"
+                      //       src="https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTc5OTk2ODUyMTMxNzM0ODcy/gettyimages-1229892983-square.jpg"
+                      //       alt=""
+                      //     />
+                      //   </a>
+                      // </Link>
+                    )}
                   </div>
                   <Transition
                     as={Fragment}
@@ -191,44 +209,38 @@ export default function Navigation({ query }: NavigationProps) {
                       </Menu.Item>
                     </Menu.Items>
                   </Transition>
-                </Menu>
+                </Menu> */}
               </div>
             </div>
           </div>
 
+          {/* SMALL SCREEN USER PART */}
           <Disclosure.Panel className="lg:hidden">
             <div className="pt-2 pb-3 space-y-1">
               {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800" */}
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                Dashboard
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                Team
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                Projects
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                Calendar
-              </Disclosure.Button>
+
+              {NAVIGATION.main.map(({ name, href }) => {
+                const currentlyActive = route === href;
+                return (
+                  <Link key={name} href={href}>
+                    <a>
+                      <Disclosure.Button
+                        as="div"
+                        className={classNames(
+                          currentlyActive
+                            ? "bg-indigo-50 border-indigo-500 text-indigo-700"
+                            : "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800",
+                          "block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                        )}
+                      >
+                        {name}
+                      </Disclosure.Button>
+                    </a>
+                  </Link>
+                );
+              })}
             </div>
-            <div className="pt-4 pb-3 border-t border-gray-200">
+            {/* <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4">
                 <div className="flex-shrink-0">
                   <img
@@ -245,13 +257,6 @@ export default function Navigation({ query }: NavigationProps) {
                     teslastock@toohigh.tbh
                   </div>
                 </div>
-                <button
-                  type="button"
-                  className="ml-auto flex-shrink-0 bg-white p-1 text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
               </div>
               <div className="mt-3 space-y-1">
                 <Disclosure.Button
@@ -276,7 +281,7 @@ export default function Navigation({ query }: NavigationProps) {
                   Sign out
                 </Disclosure.Button>
               </div>
-            </div>
+            </div> */}
           </Disclosure.Panel>
         </>
       )}

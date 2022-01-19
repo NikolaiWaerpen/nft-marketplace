@@ -14,7 +14,7 @@ export interface CollectionType {
   external_link: string;
   asset_contract: AssetContract;
   permalink: string;
-  collection: Collection;
+  collection: SpecificCollectionType;
   decimals: null;
   token_metadata: string;
   owner: Creator;
@@ -54,7 +54,7 @@ interface AssetContract {
   payout_address: string;
 }
 
-interface Collection {
+export interface SpecificCollectionType {
   banner_image_url: string;
   chat_url: null;
   created_date: Date;

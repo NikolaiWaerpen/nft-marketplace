@@ -5,6 +5,7 @@ import {
   faList,
   faMoneyBillWave,
   faQuoteLeft,
+  faSearchDollar,
   faTag,
   faTags,
   faWallet,
@@ -18,27 +19,48 @@ import Loader from "components/Loader";
 import Modal from "components/Modal";
 import MoreFromCollection from "components/MoreFromCollection";
 import OfferForm from "components/OfferForm";
-import { TESTNET } from "consts";
+import { OPENSEA_API_URL } from "consts";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery as reactQuery } from "react-query";
 import { AssetType } from "types/AssetTypes";
-import classNames from "utils/class-names";
+import classNames from "classnames";
 import formatDate from "utils/format-date";
+import { NETWORK } from "consts";
+import { useMoralis } from "react-moralis";
+import useMe from "hooks/useMe";
+import { OpenSeaAsset, WyvernSchemaName } from "opensea-js/lib/types";
+import seaport from "lib/seaport-client";
+
+const network = NETWORK;
 
 export default function TokenId() {
   const { query, isReady } = useRouter();
+  const { me } = useMe();
+  // const {
+  //   Moralis,
+  //   user,
+  //   logout,
+  //   authenticate,
+  //   enableWeb3,
+  //   isInitialized,
+  //   isAuthenticated,
+  //   isWeb3Enabled,
+  // } = useMoralis();
+  const [osAsset, setOSAsset] = useState<null | OpenSeaAsset>(null);
+
   if (!isReady) return <Loader />;
 
   const { tokenAddress, tokenId } = query;
+
+  if (typeof tokenAddress !== "string" || typeof tokenId !== "string")
+    return null;
 
   const { error, data, isLoading } = reactQuery<AssetType>(
     "asset",
     async () => {
       const response = await fetch(
-        `https://${
-          TESTNET ? "testnets-" : ""
-        }api.opensea.io/api/v1/asset/${tokenAddress}/${tokenId}`
+        `${OPENSEA_API_URL}/asset/${tokenAddress}/${tokenId}`
       );
       return response.json();
     }
@@ -52,55 +74,121 @@ export default function TokenId() {
   // @ts-ignore
   if (data.success === false)
     return <CustomError error={new Error("Asset not found")} />;
-  const { image_url, name, description, orders, collection, asset_contract } =
-    data;
+  const {
+    image_url,
+    name,
+    description,
+    orders,
+    collection,
+    asset_contract,
+    permalink,
+  } = data;
 
   const details = [
     {
       name: "Listings",
       icon: faTags,
-      items: orders
-        ? []
-        : orders
-            .filter(({ side }) => side === 1)
-            .map(({ base_price, quantity, expiration_time, maker }) => {
-              // console.log({
-              //   base_price, // TODO: Convert to ethereum
-              //   quantity, // TODO: ADD NOK conversion
-              //   expiration_time, // TODO: format this
-              //   username,
-              // });
+      items: [],
+      // items: orders
+      //   ? []
+      //   : orders
+      //       .filter(({ side }) => side === 1)
+      //       .map(({ base_price, quantity, expiration_time, maker }) => {
+      //         // console.log({
+      //         //   base_price, // TODO: Convert to ethereum
+      //         //   quantity, // TODO: ADD NOK conversion
+      //         //   expiration_time, // TODO: format this
+      //         //   username,
+      //         // });
 
-              return `${
-                parseInt(base_price) / 1000000000000000000
-              }, ${quantity}, ${expiration_time}, ${
-                maker.user ? maker.user.username : "user missing"
-              }`;
-            }),
+      //         return `${
+      //           parseInt(base_price) / 1000000000000000000
+      //         }, ${quantity}, ${expiration_time}, ${
+      //           maker.user ? maker.user.username : "user missing"
+      //         }`;
+      //       }),
     },
     {
       name: "Offers",
       icon: faList,
-      items: orders
-        ? []
-        : orders
-            .filter(({ side }) => side === 0)
-            .map(
-              ({
-                base_price,
-                quantity,
-                expiration_time,
-                maker: {
-                  user: { username },
-                },
-              }) => {
-                return `${
-                  parseInt(base_price) / 1000000000000000000
-                }, ${quantity}, ${expiration_time}, ${username}`;
-              }
-            ),
+      items: [],
+      // TODO: ADD THIS BACK IN
+      // items: orders
+      //   ? []
+      //   : orders
+      //       .filter(({ side }) => side === 0)
+      //       .map(
+      //         ({
+      //           base_price,
+      //           quantity,
+      //           expiration_time,
+      //           maker: {
+      //             user: { username },
+      //           },
+      //         }) => {
+      //           return `${
+      //             parseInt(base_price) / 1000000000000000000
+      //           }, ${quantity}, ${expiration_time}, ${username}`;
+      //         }
+      //       ),
     },
   ];
+
+  // async function moralisGetAsset() {
+  //   const response = await Moralis.Plugins.opensea.getAsset({
+  //     network,
+  //     tokenAddress,
+  //     tokenId,
+  //   });
+  //   console.log(response);
+  // }
+
+  // async function moralisCreateBuyOrder() {
+  //   await Moralis.Plugins.opensea.createBuyOrder({
+  //     network,
+  //     tokenAddress,
+  //     tokenId,
+  //     tokenType: "ERC721",
+  //     amount: 0.0,
+  //     userAddress: me,
+  //     paymentTokenAddress: "0xc778417e063141139fce010982780140aa0cd5ab",
+  //   });
+
+  //   console.log("Create Buy Order Successful");
+  // }
+
+  const getAsset = async () => {
+    const asset: OpenSeaAsset = await seaport.api.getAsset({
+      tokenAddress, // string
+      tokenId, // string | number | null
+    });
+
+    console.log("fetched asset:", asset.name);
+
+    return asset;
+  };
+  // TODO: NEED TO SIGN TRANSACTION
+
+  const createBuyOrder = async () => {
+    if (!osAsset) return;
+
+    const { tokenAddress: assetTA, tokenId: assetTI, schemaName } = osAsset;
+
+    console.log(assetTA, assetTI, me, schemaName, name);
+
+    const offer = await seaport.createBuyOrder({
+      asset: {
+        tokenAddress: "0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656",
+        tokenId:
+          "10623754799685044308911577221633789898895097313261267875088889949838145",
+        schemaName: WyvernSchemaName.ERC1155,
+      },
+      accountAddress: me, // my public token address
+      startAmount: 0.01,
+    });
+
+    console.log("Create Buy Order Successful", offer);
+  };
 
   return (
     <div className="bg-white">
@@ -255,12 +343,27 @@ export default function TokenId() {
             </div>
 
             <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
-              <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-                {name}
-              </h1>
+              <div className="flex justify-between">
+                <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
+                  {name}
+                </h1>
 
-              <div className="mt-12 flex gap-4">
-                <Button onClick={() => {}} icon={faWallet}>
+                <a href={permalink} target="_blank" rel="noreferrer">
+                  <FontAwesomeIcon icon={faSearchDollar} />
+                </a>
+              </div>
+
+              {/* <div className="mt-12 flex gap-4">
+                <Button
+                  onClick={async () => {
+                    const asset = await getAsset();
+                    setOSAsset(asset);
+                  }}
+                  icon={faWallet}
+                >
+                  Get asset
+                </Button>
+                <Button onClick={() => createBuyOrder()} icon={faWallet}>
                   Buy now
                 </Button>
                 <Button onClick={() => setModalOpen(true)} icon={faTag}>
@@ -269,7 +372,7 @@ export default function TokenId() {
                 <Button onClick={() => {}} icon={faMoneyBillWave}>
                   Create sell order
                 </Button>
-              </div>
+              </div> */}
 
               <section aria-labelledby="details-heading" className="mt-12">
                 <div className="border-t divide-y divide-gray-200">
@@ -350,19 +453,3 @@ export default function TokenId() {
     </div>
   );
 }
-
-// export async function getStaticPaths() {
-//   const tokenAddress = "0x5351105753bdbc3baa908a0c04f1468535749c3d",
-//     tokenId = "10136";
-
-//   const { orders, count } = await seaport.api.getOrders({
-//     asset_contract_address: tokenAddress as string,
-//     token_id: tokenId as string,
-//     side: OrderSide.Buy,
-//   });
-//   console.log("BUY", orders, count);
-
-//   return {
-//     props: {},
-//   };
-// }
