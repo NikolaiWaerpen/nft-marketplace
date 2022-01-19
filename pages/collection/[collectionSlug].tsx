@@ -234,7 +234,7 @@ export default function CollectionSlug() {
                     Volume traded:
                   </dt>
                   <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {stats.total_volume}
+                    {Math.floor(stats.total_volume)}
                   </dd>
                 </div>
               </dl>
@@ -419,15 +419,6 @@ export default function CollectionSlug() {
         </section>
 
         <div className="mt-8">
-          {/* <Button
-            onClick={() => setPage((previous) => previous - 1)}
-            disabled={page === 0}
-          >
-            Previous
-          </Button>
-          <Button onClick={() => setPage((previous) => previous + 1)}>
-            Next
-          </Button> */}
           {stats.count > ASSET_AMOUNT && (
             <Pagination
               totalPages={Math.floor(stats.count / ASSET_AMOUNT)}

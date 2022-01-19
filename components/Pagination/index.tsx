@@ -34,6 +34,7 @@ export default function Pagination({
 
   return (
     <nav className="border-t border-gray-200 px-4 flex items-center justify-between sm:px-0">
+      {/* TODO: DISABLE NEXT & PREVIOUS BUTTONS */}
       <div className="-mt-px w-0 flex-1 flex">
         <button
           onClick={() => setPage((previous) => previous - 1)}
