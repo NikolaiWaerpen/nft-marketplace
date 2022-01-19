@@ -17,11 +17,14 @@ export default function Loader({ message }: LoaderProps) {
     });
   }, []);
   return (
-    <div>
-      <FullscreenContainer>
-        <div id="loaderContainer" className="w-56" />
-        {message && <h5>{message}</h5>}
-      </FullscreenContainer>
+    // TODO: FIX BUG WHERE LOADER STAYS ON SCREEN
+    // <FullscreenContainer>
+    //   <div id="loaderContainer" className="w-56" />
+    //   {message && <h5>{message}</h5>}
+    // </FullscreenContainer>
+    <div className="h-96 grid place-items-center">
+      <div>Loading...</div>
+      {message && <h5>{message}</h5>}
     </div>
   );
 }
