@@ -199,48 +199,49 @@ export default function CollectionSlug() {
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
             {collection.name}
           </h1>
-          <div>
-            <div>
-              <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-4">
-                <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Items:
-                  </dt>
-                  <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {stats.count}
-                  </dd>
-                </div>
-
-                <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Owners:
-                  </dt>
-                  <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {stats.num_owners}
-                  </dd>
-                </div>
-
-                <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Floor price:
-                  </dt>
-                  <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {stats.floor_price}
-                  </dd>
-                </div>
-
-                <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Volume traded:
-                  </dt>
-                  <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {Math.floor(stats.total_volume)}
-                  </dd>
-                </div>
-              </dl>
+          <div className="mt-10 pb-12 bg-white sm:pb-16">
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="max-w-4xl mx-auto">
+                <dl className="rounded-lg bg-white shadow-lg sm:grid sm:grid-cols-4">
+                  <div className="flex flex-col border-b border-gray-100 p-6 text-center sm:border-0 sm:border-r">
+                    <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
+                      Items
+                    </dt>
+                    <dd className="order-1 text-5xl font-semibold text-indigo-600">
+                      {stats.count ? stats.count : "---"}
+                    </dd>
+                  </div>
+                  <div className="flex flex-col border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l">
+                    <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
+                      Owners
+                    </dt>
+                    <dd className="order-1 text-5xl font-semibold text-indigo-600">
+                      {stats.num_owners ? stats.num_owners : "---"}
+                    </dd>
+                  </div>
+                  <div className="flex flex-col border-t border-b border-gray-100 p-6 text-center sm:border-0 sm:border-l sm:border-r">
+                    <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
+                      Floor price
+                    </dt>
+                    <dd className="order-1 text-5xl font-semibold text-indigo-600">
+                      {stats.floor_price ? stats.floor_price : "---"}
+                    </dd>
+                  </div>
+                  <div className="flex flex-col border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l">
+                    <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
+                      Volume traded
+                    </dt>
+                    <dd className="order-1 text-5xl font-semibold text-indigo-600">
+                      {stats.total_volume
+                        ? Math.floor(stats.total_volume)
+                        : "---"}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
             </div>
           </div>
-          <p className="mt-4 max-w-3xl mx-auto text-base text-gray-500 truncate">
+          <p className="mt-4 max-w-3xl mx-auto text-base text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap sm:overflow-visible sm:whitespace-normal">
             {collection.description}
           </p>
         </div>
