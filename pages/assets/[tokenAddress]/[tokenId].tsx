@@ -3,34 +3,29 @@ import {
   faAlignLeft,
   faInfo,
   faList,
-  faMoneyBillWave,
   faQuoteLeft,
-  faSearchDollar,
-  faTag,
   faTags,
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Disclosure } from "@headlessui/react";
 import { MinusSmIcon, PlusSmIcon } from "@heroicons/react/outline";
+import classNames from "classnames";
 import Button from "components/Button";
 import CustomError from "components/CustomError";
 import Loader from "components/Loader";
 import Modal from "components/Modal";
 import MoreFromCollection from "components/MoreFromCollection";
 import OfferForm from "components/OfferForm";
-import { OPENSEA_API_URL } from "consts";
+import { NETWORK, OPENSEA_API_URL } from "consts";
+import useMe from "hooks/useMe";
+import seaport from "lib/seaport-client";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { OpenSeaAsset, WyvernSchemaName } from "opensea-js/lib/types";
+import { useState } from "react";
 import { useQuery as reactQuery } from "react-query";
 import { AssetType } from "types/AssetTypes";
-import classNames from "classnames";
 import formatDate from "utils/format-date";
-import { NETWORK } from "consts";
-import { useMoralis } from "react-moralis";
-import useMe from "hooks/useMe";
-import { OpenSeaAsset, WyvernSchemaName } from "opensea-js/lib/types";
-import seaport from "lib/seaport-client";
 
 const network = NETWORK;
 
@@ -207,7 +202,8 @@ export default function TokenId() {
                   className="w-full h-full object-center object-cover"
                 />
               </span>
-              <div className="flex flex-col gap-8">
+              {/* INFORMATION UNDER IMAGE ON LARGE SCREENS */}
+              <div className="hidden sm:flex flex-col gap-8">
                 {/* Description */}
                 <div className="border-t divide-y divide-gray-200 mt-12">
                   <div className="mt-6">
@@ -316,7 +312,9 @@ export default function TokenId() {
                               </div>
                               <div className="flex justify-between">
                                 <span>Token ID</span>
-                                <span>{tokenId}</span>
+                                <div className="w-12">
+                                  <p className="truncate m-0 p-0">{tokenId}</p>
+                                </div>
                               </div>
                               <div className="flex justify-between">
                                 <span>Token Standard</span>
@@ -336,23 +334,23 @@ export default function TokenId() {
                         </>
                       )}
                     </Disclosure>
-                    {/* </div> */}
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
-              <div className="flex justify-between">
-                <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
+              <div className="gap-8 flex flex-col">
+                <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 truncate">
                   {name}
                 </h1>
 
-                <a href={permalink} target="_blank" rel="noreferrer">
-                  <FontAwesomeIcon icon={faSearchDollar} />
-                </a>
+                <div>
+                  <a href={permalink} target="_blank" rel="noreferrer">
+                    <Button icon={faWallet}>Kjøp på OpenSea</Button>
+                  </a>
+                </div>
               </div>
-
               {/* <div className="mt-12 flex gap-4">
                 <Button
                   onClick={async () => {
@@ -430,6 +428,144 @@ export default function TokenId() {
                       )}
                     </Disclosure>
                   ))}
+                </div>
+
+                {/* INFORMATION UNDER IMAGE ON SMALL SCREENS */}
+                <div className="flex flex-col gap-8 sm:hidden">
+                  {/* Description */}
+                  <div className="border-t divide-y divide-gray-200 mt-12">
+                    <div className="mt-6">
+                      <span className="text-indigo-600 text-sm font-medium">
+                        <FontAwesomeIcon icon={faAlignLeft} className="mr-2" />
+                        Description
+                      </span>
+                      <p className="mt-6 prose prose-sm">{description}</p>
+                    </div>
+                  </div>
+
+                  {/* About collection */}
+                  <div>
+                    <div className="border-t divide-y divide-gray-200">
+                      <Disclosure as="div">
+                        {({ open }) => (
+                          <>
+                            <h3>
+                              <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
+                                <span
+                                  className={classNames(
+                                    open ? "text-indigo-600" : "text-gray-900",
+                                    "text-sm font-medium"
+                                  )}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faQuoteLeft}
+                                    className="mr-2"
+                                  />
+                                  About {collection.name}
+                                </span>
+                                <span className="ml-6 flex items-center">
+                                  {open ? (
+                                    <MinusSmIcon
+                                      className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                      aria-hidden="true"
+                                    />
+                                  ) : (
+                                    <PlusSmIcon
+                                      className="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                </span>
+                              </Disclosure.Button>
+                            </h3>
+                            <Disclosure.Panel
+                              as="div"
+                              className="pb-6 prose prose-sm"
+                            >
+                              <p className="prose prose-sm">
+                                {collection.description}
+                              </p>
+                            </Disclosure.Panel>
+                          </>
+                        )}
+                      </Disclosure>
+                    </div>
+
+                    {/* Details */}
+                    <div className="border-t divide-y divide-gray-200">
+                      <Disclosure as="div">
+                        {({ open }) => (
+                          <>
+                            <h3>
+                              <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
+                                <span
+                                  className={classNames(
+                                    open ? "text-indigo-600" : "text-gray-900",
+                                    "text-sm font-medium"
+                                  )}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faInfo}
+                                    className="mr-2"
+                                  />
+                                  Details
+                                </span>
+                                <span className="ml-6 flex items-center">
+                                  {open ? (
+                                    <MinusSmIcon
+                                      className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                      aria-hidden="true"
+                                    />
+                                  ) : (
+                                    <PlusSmIcon
+                                      className="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                </span>
+                              </Disclosure.Button>
+                            </h3>
+                            <Disclosure.Panel
+                              as="div"
+                              className="pb-6 prose prose-sm"
+                            >
+                              <div>
+                                <div className="flex justify-between">
+                                  <span>Contract address</span>
+                                  <div className="w-12">
+                                    <p className="truncate m-0 p-0">
+                                      {tokenAddress}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Token ID</span>
+                                  <div className="w-12">
+                                    <p className="truncate m-0 p-0">
+                                      {tokenId}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Token Standard</span>
+                                  <span>{asset_contract.schema_name}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Created</span>
+                                  <span>
+                                    {formatDate({
+                                      date: asset_contract.created_date,
+                                      format: "DD.MM.YY HH:mm",
+                                    })}
+                                  </span>
+                                </div>
+                              </div>
+                            </Disclosure.Panel>
+                          </>
+                        )}
+                      </Disclosure>
+                    </div>
+                  </div>
                 </div>
               </section>
             </div>

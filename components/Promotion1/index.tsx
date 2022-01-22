@@ -11,14 +11,14 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const collectionSlug = "masarati-collection";
+const collectionSlug = "covid-19-friends";
 
-export default function Promotion() {
+export default function Promotion1() {
   const { error, data, isLoading } = useQuery<DataType>(
     "promotion",
     async () => {
       const response = await fetch(
-        `https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=30&collection=${collectionSlug}`
+        `https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=3&collection=${collectionSlug}`
       );
       return response.json();
     }
@@ -41,7 +41,7 @@ export default function Promotion() {
   );
 
   return (
-    <div className="bg-white mt-16">
+    <section className="py-12 bg-white overflow-hidden md:py-20 lg:py-24 mt-36">
       <div className="max-w-2xl mx-auto py-24 px-4 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
@@ -95,6 +95,6 @@ export default function Promotion() {
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
