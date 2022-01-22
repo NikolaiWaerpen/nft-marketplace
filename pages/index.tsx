@@ -47,7 +47,6 @@ export default function Home() {
       </div>
 
       <Promotion />
-      <Team />
     </>
   );
 }

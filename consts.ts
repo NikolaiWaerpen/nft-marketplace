@@ -12,6 +12,7 @@ export const NAVIGATION = {
   main: [
     { name: "Hjem", href: "/" },
     { name: "Utforsk", href: "/explore-collections" },
+    { name: "Om oss", href: "/about" },
   ],
   social: [
     {
