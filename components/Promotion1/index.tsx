@@ -1,5 +1,6 @@
 import CustomError from "components/CustomError";
 import Loader from "components/Loader";
+import Link from "next/link";
 import { useQuery } from "react-query";
 import { CollectionType } from "types/CollectionTypes";
 import authorizedFetch from "utils/authorized-fetch";
@@ -36,7 +37,12 @@ export default function Promotion1() {
       description,
       image_url,
       image_preview_url,
-      asset_contract: { description: collection_description },
+      asset_contract: {
+        description: collection_description,
+        name: collection_name,
+        address,
+      },
+      token_id,
     }) => {
       return {
         name,
@@ -44,6 +50,9 @@ export default function Promotion1() {
         image_url,
         image_preview_url,
         collection_description,
+        collection_name,
+        address,
+        token_id,
       };
     }
   );
@@ -53,7 +62,7 @@ export default function Promotion1() {
       <div className="max-w-2xl mx-auto py-24 px-4 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            {features[0].name}
+            {features[0].collection_name}
           </h2>
           <p className="mt-4 text-gray-500">
             {features[0].collection_description}
@@ -63,7 +72,14 @@ export default function Promotion1() {
         <div className="mt-16 space-y-16">
           {features.map(
             (
-              { name, description, image_url, image_preview_url },
+              {
+                name,
+                description,
+                image_url,
+                image_preview_url,
+                address,
+                token_id,
+              },
               featureIdx
             ) => (
               <div
@@ -89,13 +105,17 @@ export default function Promotion1() {
                     "flex-auto lg:row-start-1 lg:col-span-7 xl:col-span-8"
                   )}
                 >
-                  <div className="aspect-w-3 aspect-h-2 rounded-lg bg-gray-100 overflow-hidden">
-                    <img
-                      src={image_url}
-                      alt={image_preview_url}
-                      className="object-cover"
-                    />
-                  </div>
+                  <Link href={`assets/${address}/${token_id}`}>
+                    <a>
+                      <div className="aspect-w-3 aspect-h-2 rounded-lg bg-gray-100 overflow-hidden">
+                        <img
+                          src={image_url}
+                          alt={image_preview_url}
+                          className="object-cover"
+                        />
+                      </div>
+                    </a>
+                  </Link>
                 </div>
               </div>
             )

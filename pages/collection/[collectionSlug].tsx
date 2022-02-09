@@ -18,8 +18,8 @@ import removeQueryParams from "utils/remove-query-params";
 const sortOptions = [
   // { name: "Most Popular", href: "#" },
   // { name: "Best Rating", href: "#" },
-  { name: "Newest", sortString: "&order_direction=desc" },
-  { name: "Oldest", sortString: "&order_direction=asc" },
+  { name: "Nyeste", sortString: "&order_direction=desc" },
+  { name: "Eldste", sortString: "&order_direction=asc" },
   // { name: "Price: Low to High", sorting: "#" },
   // { name: "Price: High to Low", sorting: "#" },
 ];
@@ -206,7 +206,7 @@ export default function CollectionSlug() {
                 <dl className="rounded-lg bg-white shadow-lg sm:grid sm:grid-cols-4">
                   <div className="flex flex-col border-b border-gray-100 p-6 text-center sm:border-0 sm:border-r">
                     <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
-                      Items
+                      Antall
                     </dt>
                     <dd className="order-1 text-5xl font-semibold text-theme-600">
                       {stats.count ? stats.count : "---"}
@@ -214,7 +214,7 @@ export default function CollectionSlug() {
                   </div>
                   <div className="flex flex-col border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l">
                     <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
-                      Owners
+                      Eiere
                     </dt>
                     <dd className="order-1 text-5xl font-semibold text-theme-600">
                       {stats.num_owners ? stats.num_owners : "---"}
@@ -222,7 +222,7 @@ export default function CollectionSlug() {
                   </div>
                   <div className="flex flex-col border-t border-b border-gray-100 p-6 text-center sm:border-0 sm:border-l sm:border-r">
                     <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
-                      Floor price
+                      Gjennomsnittspris
                     </dt>
                     <dd className="order-1 text-5xl font-semibold text-theme-600">
                       {stats.floor_price ? stats.floor_price : "---"}
@@ -230,7 +230,7 @@ export default function CollectionSlug() {
                   </div>
                   <div className="flex flex-col border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l">
                     <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
-                      Volume traded
+                      Omsatt volum
                     </dt>
                     <dd className="order-1 text-5xl font-semibold text-theme-600">
                       {stats.total_volume
@@ -260,7 +260,7 @@ export default function CollectionSlug() {
             <Menu as="div" className="relative z-10 inline-block text-left">
               <div>
                 <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-                  Sort
+                  Sorter
                   <ChevronDownIcon
                     className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"
                     aria-hidden="true"

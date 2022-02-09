@@ -12,9 +12,9 @@ async function fetchCollections() {
     "rude-boys",
     "thelightbulbman",
     "masarati-collection",
-    "covid-19-friends",
-    "ihad-a-dream-and-now-its-real",
-    "hurts-playground",
+    // "covid-19-friends",
+    // "ihad-a-dream-and-now-its-real",
+    // "hurts-playground",
     // "hurts-bonus-items",
   ];
 
@@ -59,8 +59,8 @@ export default function ExploreCollections() {
           aria-labelledby="products-heading"
           className="border-t border-gray-200 pt-8"
         >
-          <h2 id="products-heading" className="sr-only">
-            Products
+          <h2 id="nfts-heading" className="sr-only">
+            NFTs
           </h2>
 
           <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:gap-x-8">

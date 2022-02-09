@@ -51,7 +51,7 @@ export default function Pagination({
             className="mr-3 h-5 w-5 text-gray-400"
             aria-hidden="true"
           />
-          Previous
+          Forrige
         </button>
       </div>
 
@@ -86,7 +86,7 @@ export default function Pagination({
             }
           )}
         >
-          Next
+          Neste
           <ArrowNarrowRightIcon
             className="ml-3 h-5 w-5 text-gray-400"
             aria-hidden="true"
