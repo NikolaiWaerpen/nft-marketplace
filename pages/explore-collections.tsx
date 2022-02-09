@@ -4,18 +4,19 @@ import { OPENSEA_API_URL } from "consts";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import { SpecificCollectionType } from "types/CollectionTypes";
+import authorizedFetch from "utils/authorized-fetch";
 import formatDate from "utils/format-date";
 
 async function fetchCollections() {
   const collectionSlugs = [
     "rude-boys",
-    "animalsim",
+    "thelightbulbman",
     "masarati-collection",
     "covid-19-friends",
   ];
 
   const promises = collectionSlugs.map((collectionSlug) => {
-    return fetch(`${OPENSEA_API_URL}/collection/${collectionSlug}`);
+    return authorizedFetch(`${OPENSEA_API_URL}/collection/${collectionSlug}`);
   });
 
   const responses = await Promise.all([...promises]);

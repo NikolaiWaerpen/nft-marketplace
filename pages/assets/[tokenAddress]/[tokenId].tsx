@@ -25,6 +25,7 @@ import { OpenSeaAsset, WyvernSchemaName } from "opensea-js/lib/types";
 import { useState } from "react";
 import { useQuery as reactQuery } from "react-query";
 import { AssetType } from "types/AssetTypes";
+import authorizedFetch from "utils/authorized-fetch";
 import formatDate from "utils/format-date";
 
 const network = NETWORK;
@@ -54,7 +55,7 @@ export default function TokenId() {
   const { error, data, isLoading } = reactQuery<AssetType>(
     "asset",
     async () => {
-      const response = await fetch(
+      const response = await authorizedFetch(
         `${OPENSEA_API_URL}/asset/${tokenAddress}/${tokenId}`
       );
       return response.json();

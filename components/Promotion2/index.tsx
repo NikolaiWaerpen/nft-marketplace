@@ -4,12 +4,13 @@ import { OPENSEA_API_URL } from "consts";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import { AssetType } from "types/AssetTypes";
+import authorizedFetch from "utils/authorized-fetch";
 
 export default function Promotion2() {
   const { error, data, isLoading } = useQuery<AssetType>(
     "promotion2",
     async () => {
-      const response = await fetch(
+      const response = await authorizedFetch(
         `${OPENSEA_API_URL}/asset/0x495f947276749ce646f68ac8c248420045cb7b5e/89541808570939488520329153075107956152362103338204033312558879407166833295361`
       );
       return response.json();

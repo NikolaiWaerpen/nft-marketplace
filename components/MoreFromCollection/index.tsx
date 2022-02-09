@@ -3,6 +3,7 @@ import Loader from "components/Loader";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import { AssetType } from "types/AssetTypes";
+import authorizedFetch from "utils/authorized-fetch";
 
 type MoreFromCollectionProps = {
   collectionSlug: string;
@@ -18,7 +19,7 @@ export default function MoreFromCollection({
   const { error, data, isLoading } = useQuery<DataType>(
     "moreFromCollection",
     async () => {
-      const response = await fetch(
+      const response = await authorizedFetch(
         `https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=4&collection=${collectionSlug}`
       );
       return response.json();

@@ -2,6 +2,7 @@ import CustomError from "components/CustomError";
 import Loader from "components/Loader";
 import { useQuery } from "react-query";
 import { CollectionType } from "types/CollectionTypes";
+import authorizedFetch from "utils/authorized-fetch";
 
 type DataType = {
   assets: CollectionType[];
@@ -14,10 +15,11 @@ function classNames(...classes) {
 const collectionSlug = "covid-19-friends";
 
 export default function Promotion1() {
+  console.log(process.env.OPENSEA_API_KEY);
   const { error, data, isLoading } = useQuery<DataType>(
     "promotion",
     async () => {
-      const response = await fetch(
+      const response = await authorizedFetch(
         `https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=3&collection=${collectionSlug}`
       );
       return response.json();

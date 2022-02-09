@@ -12,6 +12,7 @@ import { Fragment, useState } from "react";
 import { useQuery } from "react-query";
 import { CollectionStatsType } from "types/CollectionStatsTypes";
 import { CollectionType, SpecificCollectionType } from "types/CollectionTypes";
+import authorizedFetch from "utils/authorized-fetch";
 import removeQueryParams from "utils/remove-query-params";
 
 const sortOptions = [
@@ -84,7 +85,7 @@ async function fetchAssets(
 ) {
   const offset = page ? `&offset=${page * ASSET_AMOUNT}` : "";
 
-  const response = await fetch(
+  const response = await authorizedFetch(
     `${OPENSEA_API_URL}/assets?collection=${collectionSlug}&limit=${ASSET_AMOUNT}${sorting}${offset}`
   );
 
@@ -98,7 +99,7 @@ type CollectionDataType = {
 };
 
 async function fetchCollection(collectionSlug: string) {
-  const response = await fetch(
+  const response = await authorizedFetch(
     `${OPENSEA_API_URL}/collection/${collectionSlug}`
   );
 
@@ -112,7 +113,7 @@ type CollectionStatsDataType = {
 };
 
 async function fetchCollectionStats(collectionSlug: string) {
-  const response = await fetch(
+  const response = await authorizedFetch(
     `${OPENSEA_API_URL}/collection/${collectionSlug}/stats`
   );
 
