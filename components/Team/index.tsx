@@ -4,7 +4,7 @@ const people = [
     role: "Utvikler",
     imageUrl: "images/nikolai.jpg",
     bio: "Fullstack utvikler i NodeJS og React med TypeScript. NFT entusiast og samler.",
-    twitterUrl: "https://twitter.com/waerpen",
+    twitterUrl: "https://twitter.com/nikolaiwaerpen",
     linkedinUrl: "https://www.linkedin.com/in/nikolai-w%C3%A6rpen-035273154/",
   },
   // More people...
@@ -20,10 +20,10 @@ export default function Team() {
               Om oss
             </h2>
             <p className="text-xl text-gray-500">
-              Når vi først gikk inn i NFT spacet innså vi fort at det var som å
-              sette seg inn i et helt nytt økosystem. Selv om vi er tekniske
-              kyndige så var læringkurven bratt. Vi ønsker å senke terskelen
-              slik at Ola Nordmann kan begynne å handle NFT'er.
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis
+              quo dolore, quaerat fugit, magnam distinctio molestiae corporis
+              fuga porro nobis voluptate assumenda. Distinctio numquam maxime in
+              quos deleniti odit labore?
             </p>
           </div>
           <div className="lg:col-span-2">

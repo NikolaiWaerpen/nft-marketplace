@@ -12,10 +12,9 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const collectionSlug = "covid-19-friends";
+const collectionSlug = "thelightbulbman";
 
 export default function Promotion1() {
-  console.log(process.env.OPENSEA_API_KEY);
   const { error, data, isLoading } = useQuery<DataType>(
     "promotion",
     async () => {
@@ -32,12 +31,19 @@ export default function Promotion1() {
   const { assets } = data;
 
   const features = assets.map(
-    ({ name, description, image_url, image_preview_url }) => {
+    ({
+      name,
+      description,
+      image_url,
+      image_preview_url,
+      asset_contract: { description: collection_description },
+    }) => {
       return {
         name,
         description,
         image_url,
         image_preview_url,
+        collection_description,
       };
     }
   );
@@ -47,11 +53,10 @@ export default function Promotion1() {
       <div className="max-w-2xl mx-auto py-24 px-4 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            Wildlife cats
+            {features[0].name}
           </h2>
           <p className="mt-4 text-gray-500">
-            THE FIRST COLLECTION FROM MA$ARATI WILDCATHATS FROM THE SHOW
-            WILDLIFE, FINEART OSLO 2019
+            {features[0].collection_description}
           </p>
         </div>
 
