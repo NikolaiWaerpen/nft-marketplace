@@ -13,6 +13,9 @@ async function fetchCollections() {
     "thelightbulbman",
     "masarati-collection",
     "covid-19-friends",
+    "ihad-a-dream-and-now-its-real",
+    "hurts-playground",
+    // "hurts-bonus-items",
   ];
 
   const promises = collectionSlugs.map((collectionSlug) => {

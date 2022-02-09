@@ -28,7 +28,7 @@ export default function Promotion2() {
 
   return (
     <section className="py-12 bg-white overflow-hidden md:py-20 lg:py-24 mt-36">
-      <div className="max-w-7xl mx-auto bg-indigo-600 lg:bg-transparent lg:px-8">
+      <div className="max-w-7xl mx-auto bg-theme-600 lg:bg-transparent lg:px-8">
         <div className="lg:grid lg:grid-cols-12">
           <div className="relative z-10 lg:col-start-1 lg:row-start-1 lg:col-span-4 lg:py-16 lg:bg-transparent">
             <div
@@ -46,7 +46,7 @@ export default function Promotion2() {
             </div>
           </div>
 
-          <div className="relative bg-indigo-600 lg:col-start-3 lg:row-start-1 lg:col-span-10 lg:rounded-3xl lg:grid lg:grid-cols-10 lg:items-center">
+          <div className="relative bg-theme-600 lg:col-start-3 lg:row-start-1 lg:col-span-10 lg:rounded-3xl lg:grid lg:grid-cols-10 lg:items-center">
             <div
               className="hidden absolute inset-0 overflow-hidden rounded-3xl lg:block"
               aria-hidden="true"
@@ -73,7 +73,7 @@ export default function Promotion2() {
                       y={0}
                       width={4}
                       height={4}
-                      className="text-indigo-500"
+                      className="text-theme-500"
                       fill="currentColor"
                     />
                   </pattern>
@@ -106,7 +106,7 @@ export default function Promotion2() {
                       y={0}
                       width={4}
                       height={4}
-                      className="text-indigo-500"
+                      className="text-theme-500"
                       fill="currentColor"
                     />
                   </pattern>
@@ -127,7 +127,7 @@ export default function Promotion2() {
               </h2>
               <p className="text-lg text-white">{description}</p>
               <Link href={`/assets/${asset_contract.address}/${token_id}`}>
-                <a className="block w-full py-3 px-5 text-center bg-white border border-transparent rounded-md shadow-md text-base font-medium text-indigo-700 hover:bg-gray-50 sm:inline-block sm:w-auto">
+                <a className="block w-full py-3 px-5 text-center bg-white border border-transparent rounded-md shadow-md text-base font-medium text-theme-700 hover:bg-gray-50 sm:inline-block sm:w-auto">
                   Se NFT
                 </a>
               </Link>

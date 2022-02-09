@@ -83,7 +83,7 @@ async function fetchAssets(
   sorting: string,
   page: number
 ) {
-  const offset = page ? `&offset=${page * ASSET_AMOUNT}` : "";
+  const offset = page ? `&offset=${(page - 1) * ASSET_AMOUNT}` : "";
 
   const response = await authorizedFetch(
     `${OPENSEA_API_URL}/assets?collection=${collectionSlug}&limit=${ASSET_AMOUNT}${sorting}${offset}`
@@ -129,7 +129,7 @@ export default function CollectionSlug() {
   } = useRouter();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sorting, setSorting] = useState("");
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   if (!isReady) return <Loader />;
 
@@ -208,7 +208,7 @@ export default function CollectionSlug() {
                     <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
                       Items
                     </dt>
-                    <dd className="order-1 text-5xl font-semibold text-indigo-600">
+                    <dd className="order-1 text-5xl font-semibold text-theme-600">
                       {stats.count ? stats.count : "---"}
                     </dd>
                   </div>
@@ -216,7 +216,7 @@ export default function CollectionSlug() {
                     <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
                       Owners
                     </dt>
-                    <dd className="order-1 text-5xl font-semibold text-indigo-600">
+                    <dd className="order-1 text-5xl font-semibold text-theme-600">
                       {stats.num_owners ? stats.num_owners : "---"}
                     </dd>
                   </div>
@@ -224,7 +224,7 @@ export default function CollectionSlug() {
                     <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
                       Floor price
                     </dt>
-                    <dd className="order-1 text-5xl font-semibold text-indigo-600">
+                    <dd className="order-1 text-5xl font-semibold text-theme-600">
                       {stats.floor_price ? stats.floor_price : "---"}
                     </dd>
                   </div>
@@ -232,7 +232,7 @@ export default function CollectionSlug() {
                     <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
                       Volume traded
                     </dt>
-                    <dd className="order-1 text-5xl font-semibold text-indigo-600">
+                    <dd className="order-1 text-5xl font-semibold text-theme-600">
                       {stats.total_volume
                         ? Math.floor(stats.total_volume)
                         : "---"}
@@ -352,7 +352,7 @@ export default function CollectionSlug() {
                               defaultValue={option.value}
                               defaultChecked={option.checked}
                               type="checkbox"
-                              className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+                              className="h-4 w-4 border-gray-300 rounded text-theme-600 focus:ring-theme-500"
                             />
                             <label
                               htmlFor={`filter-${section.id}-${optionIdx}`}
@@ -423,7 +423,8 @@ export default function CollectionSlug() {
         <div className="mt-8">
           {stats.count > ASSET_AMOUNT && (
             <Pagination
-              totalPages={Math.floor(stats.count / ASSET_AMOUNT)}
+              totalLength={stats.count}
+              pageSize={ASSET_AMOUNT}
               page={page}
               setPage={setPage}
             />

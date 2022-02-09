@@ -208,7 +208,7 @@ export default function TokenId() {
                 {/* Description */}
                 <div className="border-t divide-y divide-gray-200 mt-12">
                   <div className="mt-6">
-                    <span className="text-indigo-600 text-sm font-medium">
+                    <span className="text-theme-600 text-sm font-medium">
                       <FontAwesomeIcon icon={faAlignLeft} className="mr-2" />
                       Description
                     </span>
@@ -226,7 +226,7 @@ export default function TokenId() {
                             <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
                               <span
                                 className={classNames(
-                                  open ? "text-indigo-600" : "text-gray-900",
+                                  open ? "text-theme-600" : "text-gray-900",
                                   "text-sm font-medium"
                                 )}
                               >
@@ -239,7 +239,7 @@ export default function TokenId() {
                               <span className="ml-6 flex items-center">
                                 {open ? (
                                   <MinusSmIcon
-                                    className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                    className="block h-6 w-6 text-theme-400 group-hover:text-theme-500"
                                     aria-hidden="true"
                                   />
                                 ) : (
@@ -273,7 +273,7 @@ export default function TokenId() {
                             <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
                               <span
                                 className={classNames(
-                                  open ? "text-indigo-600" : "text-gray-900",
+                                  open ? "text-theme-600" : "text-gray-900",
                                   "text-sm font-medium"
                                 )}
                               >
@@ -286,7 +286,7 @@ export default function TokenId() {
                               <span className="ml-6 flex items-center">
                                 {open ? (
                                   <MinusSmIcon
-                                    className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                    className="block h-6 w-6 text-theme-400 group-hover:text-theme-500"
                                     aria-hidden="true"
                                   />
                                 ) : (
@@ -383,7 +383,7 @@ export default function TokenId() {
                             <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
                               <span
                                 className={classNames(
-                                  open ? "text-indigo-600" : "text-gray-900",
+                                  open ? "text-theme-600" : "text-gray-900",
                                   "text-sm font-medium"
                                 )}
                               >
@@ -393,7 +393,7 @@ export default function TokenId() {
                               <span className="ml-6 flex items-center">
                                 {open ? (
                                   <MinusSmIcon
-                                    className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                    className="block h-6 w-6 text-theme-400 group-hover:text-theme-500"
                                     aria-hidden="true"
                                   />
                                 ) : (
@@ -436,7 +436,7 @@ export default function TokenId() {
                   {/* Description */}
                   <div className="border-t divide-y divide-gray-200 mt-12">
                     <div className="mt-6">
-                      <span className="text-indigo-600 text-sm font-medium">
+                      <span className="text-theme-600 text-sm font-medium">
                         <FontAwesomeIcon icon={faAlignLeft} className="mr-2" />
                         Description
                       </span>
@@ -454,7 +454,7 @@ export default function TokenId() {
                               <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
                                 <span
                                   className={classNames(
-                                    open ? "text-indigo-600" : "text-gray-900",
+                                    open ? "text-theme-600" : "text-gray-900",
                                     "text-sm font-medium"
                                   )}
                                 >
@@ -467,7 +467,7 @@ export default function TokenId() {
                                 <span className="ml-6 flex items-center">
                                   {open ? (
                                     <MinusSmIcon
-                                      className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                      className="block h-6 w-6 text-theme-400 group-hover:text-theme-500"
                                       aria-hidden="true"
                                     />
                                   ) : (
@@ -501,7 +501,7 @@ export default function TokenId() {
                               <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
                                 <span
                                   className={classNames(
-                                    open ? "text-indigo-600" : "text-gray-900",
+                                    open ? "text-theme-600" : "text-gray-900",
                                     "text-sm font-medium"
                                   )}
                                 >
@@ -514,7 +514,7 @@ export default function TokenId() {
                                 <span className="ml-6 flex items-center">
                                   {open ? (
                                     <MinusSmIcon
-                                      className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                      className="block h-6 w-6 text-theme-400 group-hover:text-theme-500"
                                       aria-hidden="true"
                                     />
                                   ) : (
