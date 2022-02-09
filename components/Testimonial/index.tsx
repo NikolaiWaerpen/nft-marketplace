@@ -26,7 +26,7 @@ export default function Testimonial() {
                   </div>
 
                   <svg
-                    className="hidden md:block mx-1 h-5 w-5 text-indigo-600"
+                    className="hidden md:block mx-1 h-5 w-5 text-theme-600"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >

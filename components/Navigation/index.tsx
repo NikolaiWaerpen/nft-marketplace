@@ -35,18 +35,18 @@ export default function Navigation({ query }: NavigationProps) {
                 <div className="flex-shrink-0 flex items-center">
                   {/* <img
                     className="block lg:hidden h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+                    src="https://tailwindui.com/img/logos/workflow-mark-theme-600.svg"
                     alt="Workflow"
                   />
                   <img
                     className="hidden lg:block h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
+                    src="https://tailwindui.com/img/logos/workflow-logo-theme-600-mark-gray-800-text.svg"
                     alt="Workflow"
                   /> */}
 
                   <a href="/" className="hover:cursor-pointer">
                     <div>
-                      <h1 className="font-semibold text-indigo-600 text-2xl">
+                      <h1 className="font-semibold text-theme-600 text-2xl">
                         <FontAwesomeIcon icon={faArtstation} className="mr-2" />
                         Torden Torg
                       </h1>
@@ -61,7 +61,7 @@ export default function Navigation({ query }: NavigationProps) {
                         <a
                           className={classNames(
                             currentlyActive
-                              ? "border-indigo-500 text-gray-900"
+                              ? "border-theme-500 text-gray-900"
                               : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
                             "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                           )}
@@ -73,7 +73,8 @@ export default function Navigation({ query }: NavigationProps) {
                   })}
                 </div>
               </div>
-              <div className="flex-1 flex items-center justify-center px-2 lg:ml-6 lg:justify-end">
+              {/* TODO: PUT SEARCH BACK */}
+              {/* <div className="flex-1 flex items-center justify-center px-2 lg:ml-6 lg:justify-end">
                 <div className="max-w-lg w-full lg:max-w-xs">
                   <label htmlFor="search" className="sr-only">
                     Search
@@ -98,17 +99,17 @@ export default function Navigation({ query }: NavigationProps) {
                           setSearchInput(value)
                         }
                         name="search"
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-theme-500 focus:border-theme-500 sm:text-sm"
                         placeholder="Search"
                         type="search"
                       />
                     </form>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="flex items-center lg:hidden">
                 {/* Mobile menu button */}
-                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-theme-500">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XIcon className="block h-6 w-6" aria-hidden="true" />
@@ -123,7 +124,7 @@ export default function Navigation({ query }: NavigationProps) {
                 {/* <Menu as="div" className="ml-4 relative flex-shrink-0">
                   <div>
                     {me ? (
-                      <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-500">
                         <span className="sr-only">Open user menu</span>
                         <span className="w-12 truncate">{me}</span>
                         <img
@@ -148,7 +149,7 @@ export default function Navigation({ query }: NavigationProps) {
                         Connect to metamask
                       </Button>
                       // <Link href="login">
-                      //   <a className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      //   <a className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-500">
                       //     <img
                       //       className="h-8 w-8 rounded-full"
                       //       src="https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTc5OTk2ODUyMTMxNzM0ODcy/gettyimages-1229892983-square.jpg"
@@ -217,7 +218,7 @@ export default function Navigation({ query }: NavigationProps) {
           {/* SMALL SCREEN USER PART */}
           <Disclosure.Panel className="lg:hidden">
             <div className="pt-2 pb-3 space-y-1">
-              {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800" */}
+              {/* Current: "bg-theme-50 border-theme-500 text-theme-700", Default: "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800" */}
 
               {NAVIGATION.main.map(({ name, href }) => {
                 const currentlyActive = route === href;
@@ -228,7 +229,7 @@ export default function Navigation({ query }: NavigationProps) {
                         as="div"
                         className={classNames(
                           currentlyActive
-                            ? "bg-indigo-50 border-indigo-500 text-indigo-700"
+                            ? "bg-theme-50 border-theme-500 text-theme-700"
                             : "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800",
                           "block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
                         )}

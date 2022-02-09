@@ -25,7 +25,7 @@ export default function Input({
         className={`relative border shadow-sm rounded-md px-3 py-2 focus-within:ring-1 ${
           error
             ? "border-red-300  focus:border-red-500 focus:ring-red-500 focus:outline-none focus-within:border-red-500 focus-within:ring-red-600"
-            : "border-gray-300 focus-within:ring-indigo-600 focus-within:border-indigo-600"
+            : "border-gray-300 focus-within:ring-theme-600 focus-within:border-theme-600"
         } `}
       >
         {label && (

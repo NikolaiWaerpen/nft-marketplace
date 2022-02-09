@@ -2,6 +2,7 @@ import CustomError from "components/CustomError";
 import Loader from "components/Loader";
 import { useQuery } from "react-query";
 import { CollectionType } from "types/CollectionTypes";
+import authorizedFetch from "utils/authorized-fetch";
 
 type DataType = {
   assets: CollectionType[];
@@ -11,14 +12,14 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const collectionSlug = "masarati-collection";
+const collectionSlug = "thelightbulbman";
 
-export default function Promotion() {
+export default function Promotion1() {
   const { error, data, isLoading } = useQuery<DataType>(
     "promotion",
     async () => {
-      const response = await fetch(
-        `https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=30&collection=${collectionSlug}`
+      const response = await authorizedFetch(
+        `https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=3&collection=${collectionSlug}`
       );
       return response.json();
     }
@@ -30,26 +31,32 @@ export default function Promotion() {
   const { assets } = data;
 
   const features = assets.map(
-    ({ name, description, image_url, image_preview_url }) => {
+    ({
+      name,
+      description,
+      image_url,
+      image_preview_url,
+      asset_contract: { description: collection_description },
+    }) => {
       return {
         name,
         description,
         image_url,
         image_preview_url,
+        collection_description,
       };
     }
   );
 
   return (
-    <div className="bg-white mt-16">
+    <section className="py-12 bg-white overflow-hidden md:py-20 lg:py-24 mt-36">
       <div className="max-w-2xl mx-auto py-24 px-4 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            Wildlife cats
+            {features[0].name}
           </h2>
           <p className="mt-4 text-gray-500">
-            THE FIRST COLLECTION FROM MA$ARATI WILDCATHATS FROM THE SHOW
-            WILDLIFE, FINEART OSLO 2019
+            {features[0].collection_description}
           </p>
         </div>
 
@@ -95,6 +102,6 @@ export default function Promotion() {
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

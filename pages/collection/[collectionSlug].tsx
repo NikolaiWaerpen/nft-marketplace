@@ -12,6 +12,7 @@ import { Fragment, useState } from "react";
 import { useQuery } from "react-query";
 import { CollectionStatsType } from "types/CollectionStatsTypes";
 import { CollectionType, SpecificCollectionType } from "types/CollectionTypes";
+import authorizedFetch from "utils/authorized-fetch";
 import removeQueryParams from "utils/remove-query-params";
 
 const sortOptions = [
@@ -82,9 +83,9 @@ async function fetchAssets(
   sorting: string,
   page: number
 ) {
-  const offset = page ? `&offset=${page * ASSET_AMOUNT}` : "";
+  const offset = page ? `&offset=${(page - 1) * ASSET_AMOUNT}` : "";
 
-  const response = await fetch(
+  const response = await authorizedFetch(
     `${OPENSEA_API_URL}/assets?collection=${collectionSlug}&limit=${ASSET_AMOUNT}${sorting}${offset}`
   );
 
@@ -98,7 +99,7 @@ type CollectionDataType = {
 };
 
 async function fetchCollection(collectionSlug: string) {
-  const response = await fetch(
+  const response = await authorizedFetch(
     `${OPENSEA_API_URL}/collection/${collectionSlug}`
   );
 
@@ -112,7 +113,7 @@ type CollectionStatsDataType = {
 };
 
 async function fetchCollectionStats(collectionSlug: string) {
-  const response = await fetch(
+  const response = await authorizedFetch(
     `${OPENSEA_API_URL}/collection/${collectionSlug}/stats`
   );
 
@@ -128,7 +129,7 @@ export default function CollectionSlug() {
   } = useRouter();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sorting, setSorting] = useState("");
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   if (!isReady) return <Loader />;
 
@@ -199,48 +200,49 @@ export default function CollectionSlug() {
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
             {collection.name}
           </h1>
-          <div>
-            <div>
-              <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-4">
-                <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Items:
-                  </dt>
-                  <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {stats.count}
-                  </dd>
-                </div>
-
-                <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Owners:
-                  </dt>
-                  <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {stats.num_owners}
-                  </dd>
-                </div>
-
-                <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Floor price:
-                  </dt>
-                  <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {stats.floor_price}
-                  </dd>
-                </div>
-
-                <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Volume traded:
-                  </dt>
-                  <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {Math.floor(stats.total_volume)}
-                  </dd>
-                </div>
-              </dl>
+          <div className="mt-10 pb-12 bg-white sm:pb-16">
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="max-w-4xl mx-auto">
+                <dl className="rounded-lg bg-white shadow-lg sm:grid sm:grid-cols-4">
+                  <div className="flex flex-col border-b border-gray-100 p-6 text-center sm:border-0 sm:border-r">
+                    <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
+                      Items
+                    </dt>
+                    <dd className="order-1 text-5xl font-semibold text-theme-600">
+                      {stats.count ? stats.count : "---"}
+                    </dd>
+                  </div>
+                  <div className="flex flex-col border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l">
+                    <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
+                      Owners
+                    </dt>
+                    <dd className="order-1 text-5xl font-semibold text-theme-600">
+                      {stats.num_owners ? stats.num_owners : "---"}
+                    </dd>
+                  </div>
+                  <div className="flex flex-col border-t border-b border-gray-100 p-6 text-center sm:border-0 sm:border-l sm:border-r">
+                    <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
+                      Floor price
+                    </dt>
+                    <dd className="order-1 text-5xl font-semibold text-theme-600">
+                      {stats.floor_price ? stats.floor_price : "---"}
+                    </dd>
+                  </div>
+                  <div className="flex flex-col border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l">
+                    <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
+                      Volume traded
+                    </dt>
+                    <dd className="order-1 text-5xl font-semibold text-theme-600">
+                      {stats.total_volume
+                        ? Math.floor(stats.total_volume)
+                        : "---"}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
             </div>
           </div>
-          <p className="mt-4 max-w-3xl mx-auto text-base text-gray-500 truncate">
+          <p className="mt-4 max-w-3xl mx-auto text-base text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap sm:overflow-visible sm:whitespace-normal">
             {collection.description}
           </p>
         </div>
@@ -350,7 +352,7 @@ export default function CollectionSlug() {
                               defaultValue={option.value}
                               defaultChecked={option.checked}
                               type="checkbox"
-                              className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+                              className="h-4 w-4 border-gray-300 rounded text-theme-600 focus:ring-theme-500"
                             />
                             <label
                               htmlFor={`filter-${section.id}-${optionIdx}`}
@@ -421,7 +423,8 @@ export default function CollectionSlug() {
         <div className="mt-8">
           {stats.count > ASSET_AMOUNT && (
             <Pagination
-              totalPages={Math.floor(stats.count / ASSET_AMOUNT)}
+              totalLength={stats.count}
+              pageSize={ASSET_AMOUNT}
               page={page}
               setPage={setPage}
             />
